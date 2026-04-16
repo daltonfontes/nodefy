@@ -1,3 +1,18 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+current_phase: 1
+status: Not started
+last_updated: "2026-04-16T20:19:40.289Z"
+progress:
+  total_phases: 4
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
+---
+
 # Project State
 
 **Project:** Nodefy
@@ -53,6 +68,7 @@ See: `.planning/PROJECT.md`
 ## Accumulated Context
 
 ### Key Decisions Made
+
 - Fractional indexing (`position DOUBLE PRECISION`) and `stage_entered_at TIMESTAMPTZ` must be in the first migration — not retrofittable
 - RLS enforced via PostgreSQL + EF Core global query filters (two-layer enforcement)
 - DB role `nodefy_app` must NOT be superuser (RLS is bypassed for superusers)
@@ -62,6 +78,7 @@ See: `.planning/PROJECT.md`
 - Cookie: HttpOnly + Secure + SameSite=Strict — never localStorage
 
 ### Architecture Notes
+
 - Multi-tenancy: shared schema + RLS + EF Core global query filters
 - Card ordering: fractional indexing (DOUBLE PRECISION) — only moved card updated on reorder
 - SignalR groups: `pipeline:{pipelineId}` with tenant verification on join before broadcast
@@ -70,14 +87,17 @@ See: `.planning/PROJECT.md`
 - GitHub SSO: requires separate `/user/emails` call for verified email (null email breaks invite flow)
 
 ### Open Questions
+
 - Invite flow delivery: email-based (requires SMTP in v1) vs. shareable link in-app?
 - Monetary value formatting: BRL (pt-BR) locale confirmed or configurable?
 - Fractional index rebalance threshold: define before Phase 2 card move implementation
 
 ### Blockers
+
 None
 
 ### Todos
+
 - [ ] Decide on invite delivery mechanism (email SMTP vs. in-app link) before Plan 1.2
 - [ ] Register OAuth callback URLs for all 3 providers before writing auth code
 - [ ] Confirm BRL formatting requirement
@@ -86,7 +106,7 @@ None
 
 ## Session Continuity
 
-**Last session:** 2026-04-16 — Project initialized, roadmap created
+**Last session:** 2026-04-16T20:19:40.276Z
 **Next action:** Run `/gsd-plan-phase 1` to decompose Phase 1 into executable plans
 
 ---
