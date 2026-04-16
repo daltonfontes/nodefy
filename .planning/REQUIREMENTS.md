@@ -99,36 +99,36 @@
 
 ## Traceability
 
-| Requisito | Fase | Status |
-|-----------|------|--------|
-| AUTH-01 | Fase 1 | Pending |
-| AUTH-02 | Fase 1 | Pending |
-| AUTH-03 | Fase 1 | Pending |
-| AUTH-04 | Fase 1 | Pending |
-| AUTH-05 | Fase 1 | Pending |
-| WORK-01 | Fase 1 | Pending |
-| WORK-02 | Fase 1 | Pending |
-| WORK-03 | Fase 1 | Pending |
-| WORK-04 | Fase 1 | Pending |
-| WORK-05 | Fase 1 | Pending |
-| WORK-06 | Fase 1 | Pending |
-| TEST-01 | Fase 1 | Pending |
-| PIPE-01 | Fase 2 | Pending |
-| PIPE-02 | Fase 2 | Pending |
-| PIPE-03 | Fase 2 | Pending |
-| PIPE-04 | Fase 2 | Pending |
-| PIPE-05 | Fase 2 | Pending |
-| CARD-01 | Fase 2 | Pending |
-| CARD-02 | Fase 2 | Pending |
-| CARD-03 | Fase 2 | Pending |
-| CARD-04 | Fase 2 | Pending |
-| CARD-05 | Fase 2 | Pending |
-| CARD-06 | Fase 2 | Pending |
-| REAL-01 | Fase 3 | Pending |
-| REAL-02 | Fase 3 | Pending |
-| DISC-01 | Fase 3 | Pending |
-| DISC-02 | Fase 3 | Pending |
-| TEST-02 | Fase 4 | Pending |
+| Requisito | Fase | Nome da Fase | Status |
+|-----------|------|--------------|--------|
+| AUTH-01 | Phase 1 | Foundation | Pending |
+| AUTH-02 | Phase 1 | Foundation | Pending |
+| AUTH-03 | Phase 1 | Foundation | Pending |
+| AUTH-04 | Phase 1 | Foundation | Pending |
+| AUTH-05 | Phase 1 | Foundation | Pending |
+| WORK-01 | Phase 1 | Foundation | Pending |
+| WORK-02 | Phase 1 | Foundation | Pending |
+| WORK-03 | Phase 1 | Foundation | Pending |
+| WORK-04 | Phase 1 | Foundation | Pending |
+| WORK-05 | Phase 1 | Foundation | Pending |
+| WORK-06 | Phase 1 | Foundation | Pending |
+| TEST-01 | Phase 1 | Foundation | Pending |
+| PIPE-01 | Phase 2 | Core Product | Pending |
+| PIPE-02 | Phase 2 | Core Product | Pending |
+| PIPE-03 | Phase 2 | Core Product | Pending |
+| PIPE-04 | Phase 2 | Core Product | Pending |
+| PIPE-05 | Phase 2 | Core Product | Pending |
+| CARD-01 | Phase 2 | Core Product | Pending |
+| CARD-02 | Phase 2 | Core Product | Pending |
+| CARD-03 | Phase 2 | Core Product | Pending |
+| CARD-04 | Phase 2 | Core Product | Pending |
+| CARD-05 | Phase 2 | Core Product | Pending |
+| CARD-06 | Phase 2 | Core Product | Pending |
+| REAL-01 | Phase 3 | Collaboration & Discovery | Pending |
+| REAL-02 | Phase 3 | Collaboration & Discovery | Pending |
+| DISC-01 | Phase 3 | Collaboration & Discovery | Pending |
+| DISC-02 | Phase 3 | Collaboration & Discovery | Pending |
+| TEST-02 | Phase 4 | Quality & Hardening | Pending |
 
 **Coverage:**
 - v1 requirements: 28 total
@@ -137,4 +137,4 @@
 
 ---
 *Requirements defined: 2026-04-16*
-*Last updated: 2026-04-16 after initial definition*
+*Last updated: 2026-04-16 after roadmap creation*
