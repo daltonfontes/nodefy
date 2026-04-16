@@ -63,14 +63,14 @@ Exceptions:
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px | 400 (regular) | 1.5 |
-| Label | 14px | 500 (medium) | 1.4 |
+| Label | 14px | 400 (regular) | 1.4 |
 | Heading | 20px | 600 (semibold) | 1.2 |
-| Display | 28px | 700 (bold) | 1.15 |
+| Display | 28px | 600 (semibold) | 1.15 |
 
 Notes:
 - Display is used only on the login page hero heading ("Nodefy") and the workspace creation page title.
 - Heading is used for card titles (e.g., "Create your workspace", "Team members").
-- Label is used for form labels, table column headers, and role badges.
+- Label is used for form labels, table column headers, and role badges. Differentiated from Body by muted color (`slate-500`) rather than weight.
 - Body is used for all other text: descriptions, input values, helper text, empty state bodies.
 - Font stack: `'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif`
 
@@ -107,7 +107,7 @@ Phase 1 contains exactly 5 screens/flows:
 **Layout:** Full-viewport centered column. No nav. No sidebar.
 
 **Elements:**
-- Nodefy wordmark (Display/28px/700) + optional small tagline (Body/14px/400, muted)
+- Nodefy wordmark (Display/28px/600) + optional small tagline (Body/14px/400, muted)
 - Tagline text: "CRM para times de vendas" (muted, Body)
 - Three SSO buttons stacked vertically, each full-width within a 360px max-width card:
   - "Continuar com GitHub" (GitHub icon, 20px, left-aligned icon)
@@ -115,7 +115,7 @@ Phase 1 contains exactly 5 screens/flows:
   - "Continuar com Microsoft" (Microsoft icon, 20px, left-aligned icon)
 - Each button: height 44px, border variant (not filled), full-width, icon + label
 - Separator with "ou" between provider groups is not needed — all three are equal
-- Footer: "Ao entrar, você concorda com os Termos de Uso e Política de Privacidade" (12px, muted, links underlined)
+- Footer: "Ao entrar, você concorda com os Termos de Uso e Política de Privacidade" (Body/14px, muted, links underlined)
 
 **States:**
 - Default: all three buttons enabled
@@ -134,16 +134,16 @@ Phase 1 contains exactly 5 screens/flows:
 - Heading: "Crie seu workspace" (Heading/20px/600)
 - Body: "Seu workspace é onde seu time gerencia pipelines e deals." (Body/14px/400, muted)
 - Form field: Workspace name
-  - Label: "Nome do workspace" (Label/14px/500)
+  - Label: "Nome do workspace" (Label/14px/400, muted)
   - Input: placeholder "Ex: Vendas — Acme Corp", max 50 chars, `h-10`
-  - Helper text below input: "Visível para todos os membros do workspace." (12px, muted)
+  - Helper text below input: "Visível para todos os membros do workspace." (Body/14px, muted)
 - Primary CTA button: "Criar workspace" (full-width, accent background, white text)
 - Loading state: button shows `Loader2` spinner + "Criando..." text, disabled
 
 **Validation:**
-- Required: inline error below input "Nome é obrigatório" (red-600, 12px) on blur if empty
+- Required: inline error below input "Nome é obrigatório" (red-600, Body/14px) on blur if empty
 - Min 2 chars: "Nome deve ter pelo menos 2 caracteres"
-- Max 50 chars: character counter visible at `h-10` right-aligned in input when > 40 chars
+- Max 50 chars: character counter visible at `h-10` right-aligned in input when > 40 chars (Body/14px, muted)
 
 **Card dimensions:** same as Login — max-width 360px, centered, padding 32px
 
@@ -153,14 +153,16 @@ Phase 1 contains exactly 5 screens/flows:
 
 **Layout:** Settings layout — full-page with a top nav bar showing workspace name + user avatar. Content area centered, max-width 640px.
 
+**Primary visual anchor:** The "Enviar convite" CTA button — accent background, full-width within the form, draws the eye as the completion action of the flow.
+
 **Elements:**
 - Heading: "Convidar membro" (Heading/20px/600)
 - Form:
-  - Email field: Label "Email", Input type="email", placeholder "nome@empresa.com"
-  - Role select: Label "Papel", shadcn Select component with two options:
+  - Email field: Label "Email" (Label/14px/400, muted), Input type="email", placeholder "nome@empresa.com"
+  - Role select: Label "Papel" (Label/14px/400, muted), shadcn Select component with two options:
     - "Membro" (default) — can view and interact with pipelines and cards
     - "Admin" — can manage pipelines, stages, and members
-  - Role helper: "Admins podem gerenciar membros e pipelines." (12px, muted)
+  - Role helper: "Admins podem gerenciar membros e pipelines." (Body/14px, muted)
 - Primary CTA: "Enviar convite" (full-width within form, accent)
 - Cancel link: "Cancelar" — text link, no background, muted — navigates back to member list
 
@@ -169,7 +171,7 @@ Phase 1 contains exactly 5 screens/flows:
 - Loading: "Enviando..." with spinner, form disabled
 - Success: inline success alert — "Convite enviado para nome@empresa.com." — green-600 icon + text. Form resets for another invite.
 - Error — duplicate: "Este email já é membro ou tem um convite pendente."
-- Error — invalid email: "Email inválido." (inline below input)
+- Error — invalid email: "Email inválido." (inline below input, Body/14px, red-600)
 - Error — network: destructive Alert above form — "Erro ao enviar convite. Tente novamente."
 
 **Open question (STATE.md):** Invite delivery (email SMTP vs. in-app link) is unresolved. The UI spec is delivery-agnostic — the form collects email + role regardless. If shareable link is chosen, the success state should additionally show the generated invite link in a copy-to-clipboard input field.
@@ -205,6 +207,8 @@ Phase 1 contains exactly 5 screens/flows:
 
 **Layout:** Settings layout — top nav + content area max-width 768px.
 
+**Primary visual anchor:** The "Convidar membro" button in the top-right of the page header — accent background, compact height, immediately visible as the primary action for this settings screen.
+
 **Elements:**
 - Page heading: "Membros" (Heading/20px/600)
 - Subheading: "[N] membros" (Body/14px/400, muted) — live count
@@ -219,7 +223,7 @@ Phase 1 contains exactly 5 screens/flows:
     - "Remover do workspace" — destructive, red text
 
 **Pending invites section** (below active members):
-- Section label: "Convites pendentes" (Label/14px/500)
+- Section label: "Convites pendentes" (Label/14px/400, muted)
 - Same table structure but with "Pendente" badge (amber outline) and "Reenviar" / "Cancelar" actions
 - Empty: section not shown if no pending invites
 
