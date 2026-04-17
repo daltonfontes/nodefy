@@ -4,13 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 01
 status: executing
-last_updated: "2026-04-17T03:01:15.461Z"
+stopped_at: "Checkpoint Task 4 (01-02): awaiting human verify — Docker needed for TestContainers integration tests"
+last_updated: "2026-04-17T16:16:08.840Z"
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 9
-  completed_plans: 1
-  percent: 11
+  total_plans: 3
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -39,10 +40,10 @@ progress:
 Phase: 01 (foundation) — EXECUTING
 Plan: 2 of 3
 **Phase:** 1 — Foundation
-**Plan:** 01-01 complete — next: 01-02 Backend Auth & Tenant API
+**Plan:** 01-02 tasks 1-3 complete — checkpoint at Task 4 (human verify)
 **Focus:** DB Schema & Docker → Backend Auth & Tenant API → Frontend Auth & Workspace UI
 
-Progress: `[███░░░░░░░] 33%`
+Progress: `[██████░░░░] 67%`
 
 ---
 
@@ -78,6 +79,9 @@ See: `.planning/PROJECT.md`
 - Optimistic DnD with TanStack Query rollback: card state modeled as `idle | moving | error`
 - Auth.js v5 (not v4 — v4 is maintenance-only) for Next.js App Router compatibility
 - Cookie: HttpOnly + Secure + SameSite=Strict — never localStorage
+- .NET 10 SDK creates .slnx format (not .sln) — Dockerfile references .csproj directly and is unaffected
+- TenantMiddleware resolves tenant from 4 sources: JWT claim > workspaceId route > X-Tenant-Id header > id route
+- IgnoreQueryFilters() allowed only in InviteEndpoints.cs (cross-tenant token lookup) and WorkspaceEndpoints.cs (user multi-workspace query)
 
 ### Architecture Notes
 
@@ -108,9 +112,9 @@ None
 
 ## Session Continuity
 
-**Last session:** 2026-04-17T03:10:00Z
-**Stopped at:** Completed 01-01-PLAN.md (DB Schema & Docker Foundation)
-**Next action:** Execute plan 01-02 (Backend Auth & Tenant API)
+**Last session:** 2026-04-17T16:16:01.191Z
+**Stopped at:** Checkpoint Task 4 (01-02): awaiting human verify — Docker needed for TestContainers integration tests
+**Next action:** Start Docker Desktop, run `cd api && dotnet test Nodefy.slnx --logger "console;verbosity=normal"`, confirm all 22 tests pass, then type "approved" to complete Task 4 checkpoint and advance to plan 01-03
 
 ---
 *Last updated: 2026-04-17 after plan 01-01 completion*

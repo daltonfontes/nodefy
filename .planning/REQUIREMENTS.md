@@ -7,20 +7,20 @@
 
 ### Autenticação & Identidade
 
-- [ ] **AUTH-01**: Usuário pode fazer login via GitHub SSO
-- [ ] **AUTH-02**: Usuário pode fazer login via Google SSO
-- [ ] **AUTH-03**: Usuário pode fazer login via Microsoft SSO
-- [ ] **AUTH-04**: Sessão do usuário persiste entre refreshes do navegador (cookie HttpOnly)
-- [ ] **AUTH-05**: Usuário pode fazer logout de qualquer página
+- [x] **AUTH-01**: Usuário pode fazer login via GitHub SSO
+- [x] **AUTH-02**: Usuário pode fazer login via Google SSO
+- [x] **AUTH-03**: Usuário pode fazer login via Microsoft SSO
+- [x] **AUTH-04**: Sessão do usuário persiste entre refreshes do navegador (cookie HttpOnly)
+- [x] **AUTH-05**: Usuário pode fazer logout de qualquer página
 
 ### Workspace & Membros
 
 - [x] **WORK-01**: Usuário autenticado pode criar um workspace (tenant)
-- [ ] **WORK-02**: Admin pode convidar membros por email com papel admin ou membro
-- [ ] **WORK-03**: Convidado pode aceitar o convite e acessar o workspace
-- [ ] **WORK-04**: Admin pode ver a lista de membros do workspace
-- [ ] **WORK-05**: Admin pode alterar o papel de um membro (admin/membro)
-- [ ] **WORK-06**: Admin pode remover um membro do workspace
+- [x] **WORK-02**: Admin pode convidar membros por email com papel admin ou membro
+- [x] **WORK-03**: Convidado pode aceitar o convite e acessar o workspace
+- [x] **WORK-04**: Admin pode ver a lista de membros do workspace
+- [x] **WORK-05**: Admin pode alterar o papel de um membro (admin/membro)
+- [x] **WORK-06**: Admin pode remover um membro do workspace
 
 ### Pipeline & Estágios
 
@@ -51,7 +51,7 @@
 
 ### Qualidade & Testes
 
-- [ ] **TEST-01**: Backend (.NET) desenvolvido com TDD — testes escritos antes da implementação (xUnit + TestContainers)
+- [x] **TEST-01**: Backend (.NET) desenvolvido com TDD — testes escritos antes da implementação (xUnit + TestContainers)
 - [ ] **TEST-02**: Fluxos críticos cobertos por testes E2E (Playwright): login SSO, criar pipeline, criar card, mover card
 
 ## v2 Requirements
