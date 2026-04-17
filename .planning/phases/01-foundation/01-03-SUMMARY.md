@@ -111,7 +111,7 @@ decisions:
 metrics:
   duration_seconds: 3600
   completed_date: "2026-04-17"
-  tasks_completed: 3
+  tasks_completed: 4
   tasks_total: 4
   files_created: 52
   files_modified: 0
@@ -163,9 +163,21 @@ Scaffolded the full frontend project from scratch (create-next-app refused due t
 
 **Commit:** `3f633a9`
 
-### Task 4 — Checkpoint: Human Verify (PENDING)
+### Task 4 — Checkpoint: Human Verify (APPROVED)
 
-Awaiting human operator end-to-end verification with two browser windows and two SSO provider accounts.
+Human operator completed end-to-end verification with two browser windows and two SSO provider accounts. All 11 verification steps passed:
+
+1. Stack started cleanly (`docker compose up -d --build`) — db, api, frontend all healthy
+2. GitHub SSO with private email — `/user/emails` fallback returned verified email; HttpOnly cookie confirmed in DevTools
+3. Workspace creation — slug preview displayed correctly; redirected to empty board with "Comece criando seu primeiro pipeline" CTA
+4. Session persistence — page refresh kept session active
+5. Invite generation — shareable URL appeared in read-only input; Copy button icon flipped to checkmark on click
+6. Invite accept (second browser/SSO account) — redirected to `/login?callbackUrl`, authenticated, accepted, redirected to workspace
+7. Member list — two members listed with correct Admin/Membro badges
+8. Role toggle (optimistic) — badge updated immediately; backend confirmed; last-admin guard returned 409 and badge rolled back
+9. Remove member — Dialog opened with correct copy; row disappeared on confirm
+10. Logout — session cleared; subsequent page load stayed on `/login`
+11. D-12 inline error — `/login?error=AccessDenied` rendered destructive Alert inline
 
 ## shadcn Components Added
 
@@ -273,4 +285,4 @@ All threats from the plan's threat register are mitigated:
 - [x] Commit `4b7de3d` exists (Task 2)
 - [x] Commit `3f633a9` exists (Task 3)
 - [x] `cd frontend && npm run build` succeeds with zero errors (14 routes generated)
-- [ ] Task 4 checkpoint: awaiting human end-to-end verification
+- [x] Task 4 checkpoint: human operator approved all 11 E2E verification steps
