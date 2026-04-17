@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Nodefy.Api/Nodefy.Api.csproj" />
+  <Project Path="Nodefy.Tests/Nodefy.Tests.csproj" />
+</Solution>
