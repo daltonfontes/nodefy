@@ -53,7 +53,7 @@ decisions:
 metrics:
   duration_seconds: 203
   completed_date: "2026-04-17"
-  tasks_completed: 2
+  tasks_completed: 3
   tasks_total: 3
   files_created: 8
   files_modified: 0
@@ -93,9 +93,21 @@ Created all infrastructure scaffold files:
 
 **Commit:** `3541e42`
 
-### Task 3 — Human Verify (checkpoint — not yet approved)
+### Task 3 — Human Verify (checkpoint — APPROVED)
 
-Awaiting human verification of Postgres boot, RLS isolation, and role posture. See checkpoint state below.
+Human operator ran all verification steps and typed "approved". Results confirmed:
+
+| Check | Expected | Verified |
+|-------|----------|---------|
+| `rolsuper, rolbypassrls` for nodefy_app | `f \| f` | Yes |
+| Tables present (`\dt`) | users, workspaces, workspace_members, invitations, cards | Yes (5 tables) |
+| `cards.position` column type | `double precision` | Yes |
+| `cards.stage_entered_at` column type | `timestamp with time zone` | Yes |
+| RLS enabled on 3 tables | `rowsecurity = t` for workspace_members, invitations, cards | Yes |
+| Cross-tenant isolation (tenant A context) | `COUNT(*) = 1` | Yes |
+| Cross-tenant isolation (tenant B context) | `COUNT(*) = 1` | Yes |
+
+**Operator response:** "approved"
 
 ## Key Interfaces Established for Plan 02
 
@@ -152,3 +164,4 @@ All threats from the plan's threat register are mitigated:
 - [x] `frontend/Dockerfile` exists with FROM node:22-alpine
 - [x] Commit `0155984` exists (Task 1)
 - [x] Commit `3541e42` exists (Task 2)
+- [x] Task 3 human checkpoint: APPROVED by operator (all psql verification steps confirmed)
