@@ -15,7 +15,7 @@
 
 ### Workspace & Membros
 
-- [ ] **WORK-01**: Usuário autenticado pode criar um workspace (tenant)
+- [x] **WORK-01**: Usuário autenticado pode criar um workspace (tenant)
 - [ ] **WORK-02**: Admin pode convidar membros por email com papel admin ou membro
 - [ ] **WORK-03**: Convidado pode aceitar o convite e acessar o workspace
 - [ ] **WORK-04**: Admin pode ver a lista de membros do workspace

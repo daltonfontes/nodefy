@@ -8,7 +8,7 @@
 
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
-| 1 | Foundation | Authenticated user can create a workspace and invite members, with multi-tenant isolation enforced from the first migration | AUTH-01–05, WORK-01–06, TEST-01 | 3 plans |
+| 1 | Foundation | 1/3 | In Progress|  |
 | 2 | Core Product | Any workspace member can manage pipelines and move cards on a Kanban board with optimistic drag-and-drop | PIPE-01–05, CARD-01–06 | TBD |
 | 3 | Collaboration & Discovery | Card moves and edits broadcast in real time to all members; users can find any card via search and filters | REAL-01–02, DISC-01–02 | TBD |
 | 4 | Quality & Hardening | All critical user flows are covered by Playwright E2E tests and the product is shippable | TEST-02 | TBD |
@@ -38,10 +38,10 @@
 4. Admin can invite a member by email; invitee can accept and access the workspace with the assigned role (admin or member)
 5. Admin can view, promote/demote, and remove workspace members
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
-- [ ] 01-01-PLAN.md — DB Schema & Docker: PostgreSQL schema with RLS + fractional indexing + stage_entered_at and Docker Compose for db/api/frontend
+- [x] 01-01-PLAN.md — DB Schema & Docker: PostgreSQL schema with RLS + fractional indexing + stage_entered_at and Docker Compose for db/api/frontend
 - [ ] 01-02-PLAN.md — Backend Auth & Tenant API: .NET 9 JWT auth, EF Core global query filters + RLS interceptor, workspace + invite + member endpoints, xUnit + Testcontainers TDD scaffold
 - [ ] 01-03-PLAN.md — Frontend Auth & Workspace UI: Next.js 16 + Auth.js v5 (with GitHub /user/emails fallback), workspace create/select, invite copy-to-clipboard, member management UI
 
