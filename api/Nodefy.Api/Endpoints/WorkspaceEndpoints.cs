@@ -34,7 +34,15 @@ public static class WorkspaceEndpoints
                 CurrencyLocked = false,
                 CreatedAt = DateTimeOffset.UtcNow,
             };
+
+            await using var tx = await db.Database.BeginTransactionAsync();
             db.Workspaces.Add(ws);
+            await db.SaveChangesAsync(); // workspace must exist before member FK can reference it
+
+            // SET LOCAL scopes app.current_tenant to this transaction so the RLS WITH CHECK
+            // on workspace_members passes. ws.Id is a Guid — no injection risk.
+            await db.Database.ExecuteSqlRawAsync($"SET LOCAL app.current_tenant = '{ws.Id}'");
+
             db.WorkspaceMembers.Add(new WorkspaceMember
             {
                 Id = Guid.NewGuid(),
@@ -44,6 +52,7 @@ public static class WorkspaceEndpoints
                 JoinedAt = DateTimeOffset.UtcNow,
             });
             await db.SaveChangesAsync();
+            await tx.CommitAsync();
             return Results.Created($"/workspaces/{ws.Id}",
                 new WorkspaceDto(ws.Id, ws.Name, ws.Slug, ws.Currency, ws.CurrencyLocked, "admin"));
         });
