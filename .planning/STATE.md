@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 01
 status: executing
-stopped_at: "Checkpoint Task 4 (01-02): awaiting human verify — Docker needed for TestContainers integration tests"
-last_updated: "2026-04-17T16:16:08.840Z"
+stopped_at: "Checkpoint Task 4 (01-03): awaiting human verify — end-to-end SSO + workspace + invite + member flow"
+last_updated: "2026-04-17T18:28:05.653Z"
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
-  percent: 67
+  completed_plans: 3
+  percent: 100
 ---
 
 # Project State
@@ -26,24 +26,24 @@ progress:
 
 | Phase | Status | Plans Done | Plans Total |
 |-------|--------|-----------|-------------|
-| 1 - Foundation | In Progress | 1 | 3 |
+| 1 - Foundation | In Progress | 3 | 3 |
 | 2 - Core Product | Not started | 0 | 3 |
 | 3 - Collaboration & Discovery | Not started | 0 | 2 |
 | 4 - Quality & Hardening | Not started | 0 | 1 |
 
-**Overall:** 1/9 plans complete
+**Overall:** 3/9 plans complete
 
 ---
 
 ## Current Position
 
 Phase: 01 (foundation) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 **Phase:** 1 — Foundation
-**Plan:** 01-02 tasks 1-3 complete — checkpoint at Task 4 (human verify)
+**Plan:** 01-03 tasks 1-3 complete — checkpoint at Task 4 (human verify — end-to-end SSO + workspace + invite + member flow)
 **Focus:** DB Schema & Docker → Backend Auth & Tenant API → Frontend Auth & Workspace UI
 
-Progress: `[██████░░░░] 67%`
+Progress: `[██████████] 100%` (Phase 1 all plans complete, pending human verify checkpoint)
 
 ---
 
@@ -82,6 +82,9 @@ See: `.planning/PROJECT.md`
 - .NET 10 SDK creates .slnx format (not .sln) — Dockerfile references .csproj directly and is unaffected
 - TenantMiddleware resolves tenant from 4 sources: JWT claim > workspaceId route > X-Tenant-Id header > id route
 - IgnoreQueryFilters() allowed only in InviteEndpoints.cs (cross-tenant token lookup) and WorkspaceEndpoints.cs (user multi-workspace query)
+- shadcn base-nova style replaced with Radix UI default style — base-nova uses @base-ui/react incompatible with locked Tailwind v3 + HSL stack
+- Login page wrapped in Suspense boundary — Next.js 16 App Router requires Suspense for useSearchParams() in statically analyzed pages
+- tsconfig @/auth and @/auth.config aliases added for root-level auth files — create-next-app @/* only covers src/*
 
 ### Architecture Notes
 
@@ -112,9 +115,9 @@ None
 
 ## Session Continuity
 
-**Last session:** 2026-04-17T16:16:01.191Z
-**Stopped at:** Checkpoint Task 4 (01-02): awaiting human verify — Docker needed for TestContainers integration tests
-**Next action:** Start Docker Desktop, run `cd api && dotnet test Nodefy.slnx --logger "console;verbosity=normal"`, confirm all 22 tests pass, then type "approved" to complete Task 4 checkpoint and advance to plan 01-03
+**Last session:** 2026-04-17T18:27:54.244Z
+**Stopped at:** Checkpoint Task 4 (01-03): awaiting human verify — end-to-end SSO + workspace + invite + member flow
+**Next action:** Start Docker Desktop, run `docker compose up -d --build`, verify all three services healthy, then complete the 11 end-to-end verification steps in 01-03-PLAN.md Task 4 using two browser windows with two SSO accounts. Type "approved" to complete both pending checkpoints (01-02 Task 4 and 01-03 Task 4).
 
 ---
 *Last updated: 2026-04-17 after plan 01-01 completion*
