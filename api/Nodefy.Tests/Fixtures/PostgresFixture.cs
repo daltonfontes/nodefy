@@ -5,7 +5,7 @@ namespace Nodefy.Tests.Fixtures;
 
 public class PostgresFixture : IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder()
+    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder("postgres:17-alpine")
         .WithImage("postgres:17-alpine")
         .WithDatabase("nodefy_test")
         .WithUsername("nodefy_app")     // matches production role name
