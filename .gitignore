@@ -1,0 +1,30 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# .NET
+bin/
+obj/
+*.user
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+npm-debug.log*
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+docker-compose.local.yml

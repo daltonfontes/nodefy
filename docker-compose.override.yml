@@ -1,0 +1,12 @@
+services:
+  api:
+    volumes:
+      - ./api:/src
+    command: sh -c "cd /src/Nodefy.Api && dotnet watch run --urls http://+:5000 --no-launch-profile"
+
+  frontend:
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: sh -c "cd /app && npm install && npm run dev -- --hostname 0.0.0.0"
