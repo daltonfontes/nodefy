@@ -66,7 +66,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Pipeline & Stage API: EF Core migration (pipelines/stages/activity_logs tables + cards extension), FractionalIndex utility, pipeline CRUD, stage CRUD with fractional-index reordering, board load endpoint with aggregates
 - [x] 02-02-PLAN.md — Card API: Card CRUD (create, edit, archive), card move endpoint (stage_id + stage_entered_at + position atomic update), activity log writes on every mutation, GET /cards/{id}/activity endpoint
-- [ ] 02-03-PLAN.md — Board UI: Kanban board with dnd-kit (closestCorners, DragOverlay, PointerSensor distance:4), optimistic DnD with TanStack Query onMutate/onError rollback, collapsible sidebar (Zustand+localStorage), card detail Sheet panel, stage-age badge, column aggregates, activity log display
+- [x] 02-03-PLAN.md — Board UI: Kanban board with dnd-kit (closestCorners, DragOverlay, PointerSensor distance:4), optimistic DnD with TanStack Query onMutate/onError rollback, collapsible sidebar (Zustand+localStorage), card detail Sheet panel, stage-age badge, column aggregates, activity log display
 
 **UI hint**: yes
 
