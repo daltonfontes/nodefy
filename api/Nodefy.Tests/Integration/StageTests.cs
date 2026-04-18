@@ -117,11 +117,12 @@ public class StageTests : IClassFixture<PostgresFixture>
             new { prevPosition = (double?)null, nextPosition = (double?)stage1.Position });
 
         resp.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await resp.Content.ReadFromJsonAsync<StageDto>();
-        body!.Position.Should().BeLessThan(stage1.Position);
+        var body = await resp.Content.ReadFromJsonAsync<ReorderStageResponse>();
+        body!.Stage.Position.Should().BeLessThan(stage1.Position);
     }
 
     private record WorkspaceDto(Guid Id, string Name, string Slug, string Currency, bool CurrencyLocked, string? Role);
     private record PipelineDto(Guid Id, string Name, double Position);
     private record StageDto(Guid Id, string Name, double Position);
+    private record ReorderStageResponse(StageDto Stage, List<object> RebalancedPositions);
 }

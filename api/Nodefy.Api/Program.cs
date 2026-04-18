@@ -54,6 +54,9 @@ app.MapSsoSyncEndpoints();
 app.MapWorkspaceEndpoints();
 app.MapMemberEndpoints();
 app.MapInviteEndpoints();
+app.MapPipelineEndpoints();
+app.MapStageEndpoints();
+app.MapActivityLogEndpoints();
 app.MapHub<BoardHub>("/hubs/board");
 
 app.Run();
