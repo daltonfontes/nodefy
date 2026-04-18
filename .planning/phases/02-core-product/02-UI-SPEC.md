@@ -5,6 +5,7 @@ status: draft
 shadcn_initialized: true
 preset: default (slate, CSS variables)
 created: 2026-04-17
+revised: 2026-04-17
 ---
 
 # Phase 2 — UI Design Contract: Core Product
@@ -60,7 +61,7 @@ Inherited from Phase 1 (no changes). Extended with Phase 2-specific tokens:
 |---------|-------|
 | Sidebar expanded width | 240px |
 | Sidebar collapsed width | 48px |
-| TopNav height | 57px (existing `border-b` bar with `p-4`) |
+| TopNav height | 56px (existing `border-b` bar with `p-4`) |
 | Kanban column width | 280px (fixed, not fluid) |
 | Kanban column gap | 12px |
 | Card preview height | auto (min 80px) |
@@ -80,6 +81,8 @@ Inherited from Phase 1 (no changes). Extended with Phase 2-specific tokens:
 
 ## Typography
 
+**Declared font sizes: 4 (12, 14, 20, 28px). Declared font weights: 2 (400, 600).**
+
 Inherited from Phase 1 (no changes):
 
 | Role | Size | Weight | Line Height | Usage in Phase 2 |
@@ -94,8 +97,11 @@ Inherited from Phase 1 (no changes):
 | Role | Size | Weight | Usage |
 |------|------|--------|-------|
 | Column aggregate | 12px | 400 | Card count + monetary sum in column header (`text-xs text-muted-foreground`) |
-| Stage-age badge | 11px | 500 | Badge text on card preview: "23d" or "3h" |
+| Stage-age badge | 12px | 600 | Badge text on card preview: "23d" or "3h" (`text-xs font-semibold`) |
 | Activity timestamp | 12px | 400 | Timestamp in activity log entries |
+| Sidebar section label | 12px | 600 | "PIPELINES" section label (`text-xs font-semibold uppercase tracking-wide`) |
+
+> Note: 11px was considered for the stage-age badge and sidebar section label but merged into 12px (`text-xs`) to maintain the 4-size maximum. The visual distinction at 12px with font-semibold is sufficient for badge and label legibility.
 
 ---
 
@@ -138,7 +144,7 @@ Phase 2 introduces one primary layout: the **Board Shell** with a sidebar and Ka
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  WorkspaceTopNav (57px, full width)                          │
+│  WorkspaceTopNav (56px, full width)                          │
 ├────────────┬─────────────────────────────────────────────────┤
 │  Sidebar   │  Board area (scrollable horizontally)           │
 │  (240px)   │                                                 │
@@ -152,7 +158,7 @@ Phase 2 introduces one primary layout: the **Board Shell** with a sidebar and Ka
 When sidebar is collapsed:
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  WorkspaceTopNav (57px, full width)                          │
+│  WorkspaceTopNav (56px, full width)                          │
 ├────┬─────────────────────────────────────────────────────────┤
 │ 48 │  Board area (scrollable horizontally, wider)            │
 │ px │                                                         │
@@ -169,21 +175,25 @@ When sidebar is collapsed:
 ```
 [≡ toggle button]    ← top of sidebar, always visible
 ─────────────────
-PIPELINES            ← section label, 11px/500/muted (hidden when collapsed)
+PIPELINES            ← section label, text-xs/semibold/muted (hidden when collapsed)
 ─────────────────
-> Pipeline Alpha     ← active: left border accent + bg-accent/10 + font-medium
+> Pipeline Alpha     ← active: left border accent + bg-accent/10 + font-semibold
   Pipeline Beta      ← inactive: hover:bg-accent/5
   Pipeline Gamma
 ─────────────────
 + New pipeline       ← footer button, full-width, ghost variant
 ```
 
+**Sidebar toggle button:**
+- `aria-label="Recolher barra lateral"` when expanded
+- `aria-label="Expandir barra lateral"` when collapsed
+
 **Pipeline list item (expanded state):**
 - Height: 40px
 - Padding: `px-3 py-2`
 - Text: Label/14px/400, truncate with ellipsis if > 200px
 - Hover: shows `…` button (MoreHorizontal, 16px) right-aligned — admin only
-- Active: `border-l-2 border-primary bg-accent text-accent-foreground font-medium`
+- Active: `border-l-2 border-primary bg-accent text-accent-foreground font-semibold`
 - Inactive: `text-foreground hover:bg-accent/50`
 
 **Pipeline list item (collapsed state):**
@@ -201,6 +211,8 @@ PIPELINES            ← section label, 11px/500/muted (hidden when collapsed)
 - Ghost button, full width when expanded, icon-only (Plus, 16px) when collapsed
 - Click → Popover with single Input field + "Criar" button + "Cancelar" link
 - Popover anchors below the footer button
+
+> Copywriting rationale: "Cancelar" is retained for low-stakes popover dismiss actions (new pipeline name, add stage name) where no data loss occurs and the action has no destructive consequence. This secondary-action dismiss label is excluded from the context-specific CTA block rule, which applies only to destructive confirmation dialogs where specificity prevents accidental dismissal. Non-destructive popover dismiss may use "Cancelar" as a conventional secondary label.
 
 ---
 
@@ -225,16 +237,16 @@ PIPELINES            ← section label, 11px/500/muted (hidden when collapsed)
 [Stage Name]   [N cards · R$ 0,00]   [⋯]
 ```
 
-- Stage name: Label/14px/500, truncate
+- Stage name: Label/14px/400, truncate
 - Aggregate: `text-xs text-muted-foreground` — format: `{N} card{s} · {currency symbol}{value formatted}`
-- `…` button (MoreHorizontal, 16px): always visible, opens DropdownMenu — admin only for rename/delete
+- `…` button (MoreHorizontal, 16px): always visible, `aria-label="Opções do estágio"`, opens DropdownMenu — admin only for rename/delete
 - Drag cursor: `cursor-grab` on hover of the column header area; `cursor-grabbing` during drag
 - During column drag: column renders as ghost (opacity-50), drop placeholder is a dashed border box (same 280px width, height matches original column)
 
 **Column lane (scrollable vertically):**
 - Background: `bg-muted/50` (slate-100 at 50% opacity = `hsl(210 40% 98%)`)
 - Border: `border border-border rounded-lg`
-- Vertical scroll within column: max-height = `calc(100vh - 57px - 56px - 16px)` (viewport minus TopNav, board header, padding)
+- Vertical scroll within column: max-height = `calc(100vh - 56px - 56px - 16px)` (viewport minus TopNav, board header, padding)
 - Padding: `p-2` (8px inside the lane)
 - Card gap: `gap-2` (8px between cards)
 
@@ -274,7 +286,7 @@ PIPELINES            ← section label, 11px/500/muted (hidden when collapsed)
 - Gap: `gap-2` (8px between elements)
 - Assignee avatar: 24px circle, initials fallback, `rounded-full`
 - Monetary value: `text-sm text-muted-foreground` — omitted if null/zero
-- Stage-age badge: pill badge, `text-[11px] font-medium px-1.5 py-0.5 rounded-full`
+- Stage-age badge: pill badge, `text-xs font-semibold px-1.5 py-0.5 rounded-full`
   - < 7 days: `bg-slate-100 text-slate-500`
   - 7–30 days: `bg-amber-100 text-amber-700`
   - > 30 days: `bg-red-100 text-red-600`
@@ -302,6 +314,10 @@ PIPELINES            ← section label, 11px/500/muted (hidden when collapsed)
 - Width: 480px on desktop; full-width on mobile (< 640px)
 - Overlay: `bg-black/40` backdrop
 - Opens with slide-in from right (`transition: transform 300ms ease`)
+
+**Close button:**
+- × icon button at top-left of panel
+- `aria-label="Fechar painel"`
 
 **Side panel layout:**
 ```
@@ -352,7 +368,7 @@ PIPELINES            ← section label, 11px/500/muted (hidden when collapsed)
 - Ghost button with destructive text color: "Arquivar card"
 - Click → AlertDialog (not Dialog) — inline confirmation
 - AlertDialog body: "Card arquivado? Ele não aparecerá mais no board."
-- Buttons: "Cancelar" (outline) + "Arquivar" (destructive)
+- Buttons: "Manter card" (outline) + "Arquivar" (destructive)
 - On confirm: side panel closes, card removed from column with fade-out animation
 
 ---
@@ -376,6 +392,8 @@ Handled by Phase 1 empty state. Phase 2 must not regress this.
 
 ## Copywriting Contract
 
+> Dismiss-label policy: "Cancelar" is used only in low-stakes, non-destructive popover dismiss actions (new pipeline name input, add stage name input) where no data loss occurs. In these contexts, the secondary dismiss label follows conventional Portuguese UX patterns and no context-specific specificity is needed. All destructive confirmation dialogs use context-specific dismiss labels (e.g. "Manter pipeline", "Manter estágio", "Manter card") to ensure the user understands they are keeping the item, not just closing a modal.
+
 ### Sidebar & Pipeline Management
 
 | Element | Copy |
@@ -392,6 +410,7 @@ Handled by Phase 1 empty state. Phase 2 must not regress this.
 | Delete pipeline dialog heading | "Excluir pipeline?" |
 | Delete pipeline dialog body | "Todos os estágios e cards deste pipeline serão excluídos permanentemente. Esta ação não pode ser desfeita." |
 | Delete pipeline confirm button | "Excluir" |
+| Delete pipeline cancel button | "Manter pipeline" |
 | Sidebar empty state | "Nenhum pipeline ainda" |
 
 ### Stage Management
@@ -407,6 +426,7 @@ Handled by Phase 1 empty state. Phase 2 must not regress this.
 | Delete stage dialog heading | "Excluir estágio?" |
 | Delete stage dialog body | "Os cards neste estágio serão excluídos. Esta ação não pode ser desfeita." |
 | Delete stage confirm button | "Excluir" |
+| Delete stage cancel button | "Manter estágio" |
 | Empty stage: no stages heading | "Nenhum estágio ainda" |
 | Empty stage: no stages body | "Adicione estágios para começar a organizar seus cards." |
 | Empty stage: no stages CTA | "＋ Adicionar estágio" |
@@ -429,7 +449,7 @@ Handled by Phase 1 empty state. Phase 2 must not regress this.
 | Archive dialog heading | "Arquivar card?" |
 | Archive dialog body | "Card arquivado? Ele não aparecerá mais no board." |
 | Archive dialog confirm | "Arquivar" |
-| Archive dialog cancel | "Cancelar" |
+| Archive dialog cancel | "Manter card" |
 | Activity: card created | "Card criado por {name}" |
 | Activity: card moved | "Movido de "{from}" para "{to}" por {name}" |
 | Activity: field edited | "{field} alterado{a} para {value} por {name}" |
@@ -437,13 +457,22 @@ Handled by Phase 1 empty state. Phase 2 must not regress this.
 | DnD error toast | "Não foi possível mover o card. Tente novamente." |
 | Column aggregate format | "{N} card · {currency}{value}" (singular) / "{N} cards · {currency}{value}" (plural) |
 
+### Accessibility Labels (icon-only interactive elements)
+
+| Element | Icon | `aria-label` |
+|---------|------|-------------|
+| Sidebar toggle (expanded) | ChevronLeft | `"Recolher barra lateral"` |
+| Sidebar toggle (collapsed) | ChevronRight | `"Expandir barra lateral"` |
+| Column options menu trigger | MoreHorizontal | `"Opções do estágio"` |
+| Card detail panel close | × (X) | `"Fechar painel"` |
+
 ---
 
 ## Interaction Contracts
 
 ### Sidebar Toggle (D-03)
 
-1. Toggle button: `ChevronLeft` (16px) when expanded, `ChevronRight` (16px) when collapsed. Positioned at top of sidebar, full-width clickable row (height 40px).
+1. Toggle button: `ChevronLeft` (16px) when expanded, `ChevronRight` (16px) when collapsed. `aria-label` switches between `"Recolher barra lateral"` and `"Expandir barra lateral"`. Positioned at top of sidebar, full-width clickable row (height 40px).
 2. On collapse: sidebar width animates from 240px to 48px with `transition-all duration-200 ease-in-out`. Pipeline names and section label fade out (`opacity: 0`). Board area expands to fill vacated space.
 3. On expand: reverse. Pipeline names fade in after sidebar reaches full width.
 4. Collapsed state: Zustand `ui-store.ts` field `sidebarCollapsed: boolean`. Persisted to `localStorage` with key `nodefy_sidebar_collapsed`.
@@ -482,7 +511,7 @@ Same pattern as pipeline rename. Column header stage name becomes an `<input>` o
    - Source card position: renders a ghost placeholder (dashed border, same dimensions, `bg-muted opacity-60`)
    - Ghost card (following cursor): `opacity-90`, `shadow-lg`, `rotate-1` tilt, `scale-105`
    - Valid drop column: lane background `bg-primary/5`, border `border-primary`
-4. On drop: 
+4. On drop:
    - Zustand `draggingCardId` clears immediately
    - TanStack Query `useMutation` fires optimistic update: card moves to target column at computed fractional position
    - `stage_entered_at` reset tracked via mutation payload (backend handles it)
@@ -492,7 +521,7 @@ Same pattern as pipeline rename. Column header stage name becomes an `<input>` o
 ### Card Detail Side Panel
 
 1. Click card → URL gains `?card={cardId}` → Sheet opens with slide-in animation (300ms ease)
-2. Closing: click overlay, press Escape, or click × button → URL loses `?card=` param → Sheet slides out
+2. Closing: click overlay, press Escape, or click × button (`aria-label="Fechar painel"`) → URL loses `?card=` param → Sheet slides out
 3. Inline save for title: Enter key or blur → PATCH `/cards/{id}` — optimistic: heading updates immediately
 4. Field edit commit: blur → PATCH → optimistic. Rollback: field reverts to previous value + toast
 5. Deep link: if page loads with `?card={cardId}`, Sheet opens immediately on mount (no extra click)
@@ -500,7 +529,7 @@ Same pattern as pipeline rename. Column header stage name becomes an `<input>` o
 ### Delete Pipeline / Stage Confirmation
 
 1. Destructive actions (delete pipeline, delete stage) always require confirmation via shadcn Dialog (not browser confirm)
-2. Dialog: heading + body explaining data loss + "Cancelar" (outline) + "Excluir" (destructive variant)
+2. Dialog: heading + body explaining data loss + context-specific cancel ("Manter pipeline" or "Manter estágio", outline variant) + "Excluir" (destructive variant)
 3. "Excluir" button shows spinner while DELETE request is in-flight; after success: dialog closes, item removed from list
 
 ### Fractional Index Rebalance Threshold (Claude's discretion)
