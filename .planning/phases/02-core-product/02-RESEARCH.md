@@ -939,22 +939,25 @@ function KanbanCard({ card, stageId }: { card: Card; stageId: string }) {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Frontend API client for mutations (client-side fetches)**
+1. **Frontend API client for mutations (client-side fetches)** (RESOLVED)
    - What we know: `apiFetch` in `src/lib/api.ts` uses `auth()` which is a server-side Next.js call and cannot run in client components.
    - What's unclear: Phase 2 board mutations (card move, rename, create) fire from Client Components. Need a client-side fetch utility that includes the JWT token obtained from Auth.js session.
    - Recommendation: Create `src/lib/client-api.ts` that calls `fetch` with a token obtained via `getSession()` (Auth.js v5 client-side) or store the JWT in a session cookie readable by client JS. Research needed before Plan 2.3 implementation.
+   - **Resolution:** Route Handler proxy pattern. Client Components call `/api/*/route.ts` Next.js Route Handlers via plain `fetch`. Route Handlers call the upstream .NET API using `apiFetch` (server-side Auth.js session). No client-side token exposure needed. Implemented in Plan 02-03 Task 1.
 
-2. **Currency formatting locale**
+2. **Currency formatting locale** (RESOLVED)
    - What we know: `currency` field on workspace is `BRL|USD|EUR`; column aggregate format is `{N} cards · R$ 0,00`.
    - What's unclear: Exact formatting implementation — `Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })` or a simpler approach. STATE.md lists this as an open question.
    - Recommendation: Use `Intl.NumberFormat` with workspace currency. For BRL: `'pt-BR'` locale. For USD/EUR: `'en-US'`/`'de-DE'`. No external library needed.
+   - **Resolution:** `new Intl.NumberFormat('pt-BR', { style: 'currency', currency: workspace.currency }).format(value)` in `KanbanColumn`. Locale mapped per currency: BRL→`pt-BR`, USD→`en-US`, EUR→`de-DE`. No library install required.
 
-3. **Board route structure: `/workspace/[id]/pipeline/[pipelineId]` or query param?**
+3. **Board route structure: `/workspace/[id]/pipeline/[pipelineId]` or query param?** (RESOLVED)
    - What we know: CONTEXT.md implies URL routing between pipelines. UI-SPEC references `router.push` to a pipeline route.
    - What's unclear: Exact Next.js route structure is not locked. Could be `/workspace/[id]/pipeline/[pipelineId]` (nested folder) or `/workspace/[id]?pipeline=[id]` (query param).
    - Recommendation: Use `/workspace/[id]/pipeline/[pipelineId]` — cleaner deep links, easier to cache per-pipeline board queries in TanStack Query by pipelineId.
+   - **Resolution:** `/workspace/[id]/pipeline/[pipelineId]` nested folder route. Implemented as `frontend/src/app/workspace/[id]/pipeline/[pipelineId]/page.tsx` in Plan 02-03 Task 2.
 
 ---
 

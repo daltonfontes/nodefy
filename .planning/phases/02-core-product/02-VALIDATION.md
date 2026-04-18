@@ -59,9 +59,12 @@ created: 2026-04-18
 
 ## Wave 0 Requirements
 
-- [ ] `api/Nodefy.Tests/Pipelines/PipelineEndpointsTests.cs` — stubs for PIPE-01 through PIPE-05
-- [ ] `api/Nodefy.Tests/Cards/CardEndpointsTests.cs` — stubs for CARD-01 through CARD-06
-- [ ] `api/Nodefy.Tests/Cards/ActivityLogTests.cs` — stubs for CARD-06 activity log
+- [ ] `api/Nodefy.Tests/Integration/PipelineTests.cs` — covers PIPE-01, PIPE-02
+- [ ] `api/Nodefy.Tests/Integration/StageTests.cs` — covers PIPE-03, PIPE-04
+- [ ] `api/Nodefy.Tests/Integration/BoardTests.cs` — covers PIPE-05
+- [ ] `api/Nodefy.Tests/Integration/CardTests.cs` — covers CARD-01, CARD-02, CARD-03, CARD-04, CARD-05
+- [ ] `api/Nodefy.Tests/Integration/ActivityLogTests.cs` — covers CARD-06
+- [ ] `api/Nodefy.Tests/Unit/FractionalIndexTests.cs` — covers rebalance threshold logic
 - [ ] xUnit + TestContainers already installed from Phase 1 — no new installs needed
 
 ---
