@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 02
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-04-18T15:12:09.742Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-18T15:19:13.218Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 6
-  completed_plans: 4
-  percent: 67
+  completed_plans: 5
+  percent: 83
 ---
 
 # Project State
@@ -68,6 +68,7 @@ See: `.planning/PROJECT.md`
 
 ---
 | Phase 02 P01 | 705 | 3 tasks | 19 files |
+| Phase 02 P02 | 258 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,10 @@ See: `.planning/PROJECT.md`
 - shadcn base-nova style replaced with Radix UI default style — base-nova uses @base-ui/react incompatible with locked Tailwind v3 + HSL stack
 - Login page wrapped in Suspense boundary — Next.js 16 App Router requires Suspense for useSearchParams() in statically analyzed pages
 - tsconfig @/auth and @/auth.config aliases added for root-level auth files — create-next-app @/* only covers src/*
+- Member-level auth for all card endpoints (not admin-only) — any workspace member can create/edit/move/archive cards
+- Card mutation pattern: IgnoreQueryFilters to bootstrap tenant → SetTenant → member check → mutate → LogActivity → SaveChangesAsync (atomic audit trail)
+- Partial PATCH on cards emits one activity log entry per changed field for fine-grained audit trail
+- Cross-pipeline guard on PATCH /cards/{id}/move: targetStageId must belong to same pipelineId — returns 400 if mismatch
 
 ### Architecture Notes
 
@@ -119,8 +124,8 @@ None
 
 ## Session Continuity
 
-**Last session:** 2026-04-18T15:12:09.728Z
-**Stopped at:** Completed 02-01-PLAN.md
+**Last session:** 2026-04-18T15:19:13.205Z
+**Stopped at:** Completed 02-02-PLAN.md
 **Next action:** Phase 1 is complete. Begin Phase 2 — Core Product (pipeline CRUD, card CRUD, drag-and-drop Kanban board).
 
 ---

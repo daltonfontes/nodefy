@@ -32,12 +32,12 @@
 
 ### Cards
 
-- [ ] **CARD-01**: Usuário pode criar card com título, descrição, valor monetário, responsável e data de fechamento
-- [ ] **CARD-02**: Usuário pode editar campos do card
-- [ ] **CARD-03**: Usuário pode arquivar (excluir soft) card
-- [ ] **CARD-04**: Usuário pode mover card entre estágios via drag-and-drop com update otimista
-- [ ] **CARD-05**: Card exibe indicador de tempo no estágio atual (ex: "23 dias neste estágio")
-- [ ] **CARD-06**: Card exibe log de atividade (criação, movimentações, edições) em ordem cronológica
+- [x] **CARD-01**: Usuário pode criar card com título, descrição, valor monetário, responsável e data de fechamento
+- [x] **CARD-02**: Usuário pode editar campos do card
+- [x] **CARD-03**: Usuário pode arquivar (excluir soft) card
+- [x] **CARD-04**: Usuário pode mover card entre estágios via drag-and-drop com update otimista
+- [x] **CARD-05**: Card exibe indicador de tempo no estágio atual (ex: "23 dias neste estágio")
+- [x] **CARD-06**: Card exibe log de atividade (criação, movimentações, edições) em ordem cronológica
 
 ### Colaboração em Tempo Real
 
