@@ -57,6 +57,7 @@ app.MapInviteEndpoints();
 app.MapPipelineEndpoints();
 app.MapStageEndpoints();
 app.MapActivityLogEndpoints();
+app.MapCardEndpoints();
 app.MapHub<BoardHub>("/hubs/board");
 
 app.Run();
