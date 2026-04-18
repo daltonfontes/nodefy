@@ -24,11 +24,11 @@
 
 ### Pipeline & Estágios
 
-- [ ] **PIPE-01**: Admin pode criar pipelines dentro do workspace
-- [ ] **PIPE-02**: Admin pode renomear e excluir pipelines
-- [ ] **PIPE-03**: Admin pode adicionar, renomear e excluir estágios de um pipeline
-- [ ] **PIPE-04**: Admin pode reordenar estágios de um pipeline
-- [ ] **PIPE-05**: Cabeçalho de cada coluna exibe contagem de cards e soma do valor monetário (diferenciador)
+- [x] **PIPE-01**: Admin pode criar pipelines dentro do workspace
+- [x] **PIPE-02**: Admin pode renomear e excluir pipelines
+- [x] **PIPE-03**: Admin pode adicionar, renomear e excluir estágios de um pipeline
+- [x] **PIPE-04**: Admin pode reordenar estágios de um pipeline
+- [x] **PIPE-05**: Cabeçalho de cada coluna exibe contagem de cards e soma do valor monetário (diferenciador)
 
 ### Cards
 

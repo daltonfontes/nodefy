@@ -2,23 +2,23 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 01
+current_phase: 02
 status: executing
-stopped_at: Phase 2 planning complete — 3 plans ready
-last_updated: "2026-04-18T14:46:35.107Z"
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-04-18T15:12:09.742Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 6
-  completed_plans: 3
-  percent: 50
+  completed_plans: 4
+  percent: 67
 ---
 
 # Project State
 
 **Project:** Nodefy
-**Current Phase:** 01
-**Status:** Ready to execute
+**Current Phase:** 02
+**Status:** Executing Phase 02
 
 ---
 
@@ -27,7 +27,7 @@ progress:
 | Phase | Status | Plans Done | Plans Total |
 |-------|--------|-----------|-------------|
 | 1 - Foundation | Complete | 3 | 3 |
-| 2 - Core Product | Not started | 0 | 3 |
+| 2 - Core Product | In Progress | 1 | 3 |
 | 3 - Collaboration & Discovery | Not started | 0 | 2 |
 | 4 - Quality & Hardening | Not started | 0 | 1 |
 
@@ -37,8 +37,8 @@ progress:
 
 ## Current Position
 
-Phase: 01 (foundation) — EXECUTING
-Plan: 3 of 3
+Phase: 02 (core-product) — EXECUTING
+Plan: 1 of 3
 **Phase:** 1 — Foundation
 **Plan:** 01-03 COMPLETE — all 4 tasks done, human E2E verification approved
 **Focus:** DB Schema & Docker → Backend Auth & Tenant API → Frontend Auth & Workspace UI
@@ -53,7 +53,7 @@ See: `.planning/PROJECT.md`
 
 **Core value:** Qualquer membro de um workspace consegue ver e mover cards entre estágios do pipeline em tempo real, sem atrito.
 
-**Current focus:** Phase 01 — foundation
+**Current focus:** Phase 02 — core-product
 
 ---
 
@@ -67,6 +67,7 @@ See: `.planning/PROJECT.md`
 | Session count | 1 |
 
 ---
+| Phase 02 P01 | 705 | 3 tasks | 19 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,9 @@ See: `.planning/PROJECT.md`
 - .NET 10 SDK creates .slnx format (not .sln) — Dockerfile references .csproj directly and is unaffected
 - TenantMiddleware resolves tenant from 4 sources: JWT claim > workspaceId route > X-Tenant-Id header > id route
 - IgnoreQueryFilters() allowed only in InviteEndpoints.cs (cross-tenant token lookup) and WorkspaceEndpoints.cs (user multi-workspace query)
+- IgnoreQueryFilters used for tenant bootstrap on PATCH/DELETE /pipelines/{id} and /stages/{id} — immediately guarded by IsAdmin check; no data returned without authorization
+- AppDbContextFactory with NullTenantService added for EF Core design-time migration tooling — not used at runtime
+- init.sql updated to full Phase 2 schema (pipelines, stages, cards, activity_logs) — test containers use init.sql directly, not EF migrations
 - shadcn base-nova style replaced with Radix UI default style — base-nova uses @base-ui/react incompatible with locked Tailwind v3 + HSL stack
 - Login page wrapped in Suspense boundary — Next.js 16 App Router requires Suspense for useSearchParams() in statically analyzed pages
 - tsconfig @/auth and @/auth.config aliases added for root-level auth files — create-next-app @/* only covers src/*
@@ -115,8 +119,8 @@ None
 
 ## Session Continuity
 
-**Last session:** 2026-04-18T14:46:35.096Z
-**Stopped at:** Phase 2 planning complete — 3 plans ready
+**Last session:** 2026-04-18T15:12:09.728Z
+**Stopped at:** Completed 02-01-PLAN.md
 **Next action:** Phase 1 is complete. Begin Phase 2 — Core Product (pipeline CRUD, card CRUD, drag-and-drop Kanban board).
 
 ---

@@ -9,7 +9,7 @@
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
 | 1 | Foundation | 1/3 | In Progress|  |
-| 2 | Core Product | Any workspace member can manage pipelines and move cards on a Kanban board with optimistic drag-and-drop | PIPE-01–05, CARD-01–06 | 3 plans |
+| 2 | Core Product | 1/3 | In Progress|  |
 | 3 | Collaboration & Discovery | Card moves and edits broadcast in real time to all members; users can find any card via search and filters | REAL-01–02, DISC-01–02 | TBD |
 | 4 | Quality & Hardening | All critical user flows are covered by Playwright E2E tests and the product is shippable | TEST-02 | TBD |
 
@@ -61,10 +61,10 @@ Plans:
 4. Member can drag a card to a different stage; the UI updates immediately (optimistic) and rolls back visually on network failure
 5. Each card displays how long it has been in its current stage, and a chronological activity log of all moves and edits
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
-- [ ] 02-01-PLAN.md — Pipeline & Stage API: EF Core migration (pipelines/stages/activity_logs tables + cards extension), FractionalIndex utility, pipeline CRUD, stage CRUD with fractional-index reordering, board load endpoint with aggregates
+- [x] 02-01-PLAN.md — Pipeline & Stage API: EF Core migration (pipelines/stages/activity_logs tables + cards extension), FractionalIndex utility, pipeline CRUD, stage CRUD with fractional-index reordering, board load endpoint with aggregates
 - [ ] 02-02-PLAN.md — Card API: Card CRUD (create, edit, archive), card move endpoint (stage_id + stage_entered_at + position atomic update), activity log writes on every mutation, GET /cards/{id}/activity endpoint
 - [ ] 02-03-PLAN.md — Board UI: Kanban board with dnd-kit (closestCorners, DragOverlay, PointerSensor distance:4), optimistic DnD with TanStack Query onMutate/onError rollback, collapsible sidebar (Zustand+localStorage), card detail Sheet panel, stage-age badge, column aggregates, activity log display
 
