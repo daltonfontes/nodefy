@@ -107,10 +107,10 @@ public class TenantIsolationTests : IClassFixture<PostgresFixture>
         var conn = db.Database.GetDbConnection();
         await conn.OpenAsync();
 
-        // Set RLS context to tenant A
+        // Drop to non-superuser role so RLS policies are enforced, then set tenant context
         await using (var cmd = conn.CreateCommand())
         {
-            cmd.CommandText = $"SET app.current_tenant = '{wsA!.Id}'";
+            cmd.CommandText = $"SET ROLE nodefy_api; SET app.current_tenant = '{wsA!.Id}'";
             await cmd.ExecuteNonQueryAsync();
         }
 

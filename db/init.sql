@@ -80,8 +80,11 @@ CREATE INDEX idx_cards_tenant ON cards(tenant_id);
 -- ============================================================================
 
 ALTER TABLE workspace_members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE workspace_members FORCE ROW LEVEL SECURITY;
 ALTER TABLE invitations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE invitations FORCE ROW LEVEL SECURITY;
 ALTER TABLE cards ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cards FORCE ROW LEVEL SECURITY;
 
 -- Policies reference the session variable that TenantDbConnectionInterceptor
 -- (Phase 1.2) sets at every connection open: SET app.current_tenant = '<uuid>'.
@@ -99,9 +102,15 @@ CREATE POLICY tenant_isolation_policy ON cards
 -- users table is NOT RLS-protected — global lookup table.
 
 -- ============================================================================
--- Role privilege guard (for human review):
--- POSTGRES_USER creates a standard login role by default — keep it that way.
--- WARNING: Do NOT grant nodefy_app any elevated database privileges.
--- Granting elevated privileges would silently disable all RLS tenant isolation.
--- See db/README.md for details.
+-- Application role (non-superuser) — RLS is enforced at this privilege level.
+-- nodefy_app (POSTGRES_USER) is a superuser and bypasses RLS.
+-- nodefy_api is used in integration tests to verify Postgres-level isolation.
 -- ============================================================================
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'nodefy_api') THEN
+        CREATE ROLE nodefy_api NOLOGIN;
+    END IF;
+END $$;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO nodefy_api;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO nodefy_api;
