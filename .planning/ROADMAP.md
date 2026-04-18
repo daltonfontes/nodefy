@@ -43,7 +43,7 @@
 Plans:
 - [x] 01-01-PLAN.md — DB Schema & Docker: PostgreSQL schema with RLS + fractional indexing + stage_entered_at and Docker Compose for db/api/frontend
 - [x] 01-02-PLAN.md — Backend Auth & Tenant API: .NET 9 JWT auth, EF Core global query filters + RLS interceptor, workspace + invite + member endpoints, xUnit + Testcontainers TDD scaffold
-- [ ] 01-03-PLAN.md — Frontend Auth & Workspace UI: Next.js 16 + Auth.js v5 (with GitHub /user/emails fallback), workspace create/select, invite copy-to-clipboard, member management UI
+- [x] 01-03-PLAN.md — Frontend Auth & Workspace UI: Next.js 16 + Auth.js v5 (with GitHub /user/emails fallback), workspace create/select, invite copy-to-clipboard, member management UI
 
 **UI hint**: yes
 
