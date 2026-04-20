@@ -25,7 +25,7 @@ decisions:
 metrics:
   duration_seconds: 120
   completed_date: "2026-04-20"
-  tasks_completed: 2
+  tasks_completed: 3
   tasks_total: 3
   files_changed: 2
 ---
@@ -118,5 +118,9 @@ No new network endpoints, auth paths, or trust boundaries introduced beyond what
 - [x] `grep "Disponível na próxima fase"` returns no results
 - [x] Task 1 commit: `3b6e781`
 - [x] Task 2 commit: `a6bccea`
+- [x] Task 3 (human-verify): approved — Cenário A completed successfully (pipeline created, redirected to board)
+- [x] UAT test 2 marked `pass` in 02-UAT.md
+- [x] UAT tests 3–10 unblocked (changed from `blocked` to `pending`) in 02-UAT.md
+- [x] Gap "workspace home entry for first pipeline" marked `closed` in 02-UAT.md
 
 ## Self-Check: PASSED
