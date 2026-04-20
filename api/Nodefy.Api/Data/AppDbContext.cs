@@ -19,6 +19,9 @@ public class AppDbContext : DbContext
     public DbSet<WorkspaceMember> WorkspaceMembers => Set<WorkspaceMember>();
     public DbSet<Invitation> Invitations => Set<Invitation>();
     public DbSet<Card> Cards => Set<Card>();
+    public DbSet<Pipeline> Pipelines => Set<Pipeline>();
+    public DbSet<Stage> Stages => Set<Stage>();
+    public DbSet<ActivityLog> ActivityLogs => Set<ActivityLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -81,7 +84,59 @@ public class AppDbContext : DbContext
             b.Property(e => e.Position).HasColumnName("position");
             b.Property(e => e.StageEnteredAt).HasColumnName("stage_entered_at");
             b.Property(e => e.CreatedAt).HasColumnName("created_at");
-            b.HasQueryFilter(c => c.TenantId == _tenantId);
+            b.Property(e => e.Title).HasColumnName("title");
+            b.Property(e => e.Description).HasColumnName("description");
+            b.Property(e => e.MonetaryValue).HasColumnName("monetary_value").HasColumnType("numeric(15,2)");
+            b.Property(e => e.PipelineId).HasColumnName("pipeline_id");
+            b.Property(e => e.StageId).HasColumnName("stage_id");
+            b.Property(e => e.AssigneeId).HasColumnName("assignee_id");
+            b.Property(e => e.CloseDate).HasColumnName("close_date");
+            b.Property(e => e.ArchivedAt).HasColumnName("archived_at");
+            b.HasQueryFilter(c => c.TenantId == _tenantId && c.ArchivedAt == null);
+            b.HasOne<Stage>().WithMany().HasForeignKey(c => c.StageId)
+                .OnDelete(DeleteBehavior.Restrict);
+            b.HasOne<Pipeline>().WithMany().HasForeignKey(c => c.PipelineId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Pipeline>(b =>
+        {
+            b.ToTable("pipelines");
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.TenantId).HasColumnName("tenant_id");
+            b.Property(e => e.Name).HasColumnName("name");
+            b.Property(e => e.Position).HasColumnName("position");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasQueryFilter(e => e.TenantId == _tenantId);
+        });
+
+        modelBuilder.Entity<Stage>(b =>
+        {
+            b.ToTable("stages");
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.TenantId).HasColumnName("tenant_id");
+            b.Property(e => e.PipelineId).HasColumnName("pipeline_id");
+            b.Property(e => e.Name).HasColumnName("name");
+            b.Property(e => e.Position).HasColumnName("position");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasQueryFilter(e => e.TenantId == _tenantId);
+            b.HasOne<Pipeline>().WithMany().HasForeignKey(s => s.PipelineId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<ActivityLog>(b =>
+        {
+            b.ToTable("activity_logs");
+            b.Property(e => e.Id).HasColumnName("id");
+            b.Property(e => e.TenantId).HasColumnName("tenant_id");
+            b.Property(e => e.CardId).HasColumnName("card_id");
+            b.Property(e => e.ActorId).HasColumnName("actor_id");
+            b.Property(e => e.Action).HasColumnName("action");
+            b.Property(e => e.Payload).HasColumnName("payload").HasColumnType("jsonb");
+            b.Property(e => e.CreatedAt).HasColumnName("created_at");
+            b.HasQueryFilter(e => e.TenantId == _tenantId);
+            b.HasOne<Card>().WithMany().HasForeignKey(a => a.CardId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

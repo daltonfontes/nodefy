@@ -116,9 +116,8 @@ public class MemberTests : IClassFixture<PostgresFixture>
         await SeedUser(adminClient, adminId, adminEmail);
         var ws = await CreateWorkspace(adminClient, $"Promote Test {adminId}");
 
-        var memberId = Guid.NewGuid();
-        var memberEmail = $"member-promote-{memberId}@test.com";
-        await AddMember(adminClient, ws, memberEmail);
+        var memberEmail = $"member-promote-{Guid.NewGuid()}@test.com";
+        var memberId = await AddMember(adminClient, ws, memberEmail);
 
         var adminWithTenant = CreateClient(adminId, adminEmail, ws.Id);
         var resp = await adminWithTenant.PatchAsJsonAsync($"/workspaces/{ws.Id}/members/{memberId}", new { role = "admin" });
@@ -154,9 +153,8 @@ public class MemberTests : IClassFixture<PostgresFixture>
         await SeedUser(adminClient, adminId, adminEmail);
         var ws = await CreateWorkspace(adminClient, $"Delete Member Test {adminId}");
 
-        var memberId = Guid.NewGuid();
-        var memberEmail = $"member-delete-{memberId}@test.com";
-        await AddMember(adminClient, ws, memberEmail);
+        var memberEmail = $"member-delete-{Guid.NewGuid()}@test.com";
+        var memberId = await AddMember(adminClient, ws, memberEmail);
 
         var adminWithTenant = CreateClient(adminId, adminEmail, ws.Id);
         var resp = await adminWithTenant.DeleteAsync($"/workspaces/{ws.Id}/members/{memberId}");

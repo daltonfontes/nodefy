@@ -2,23 +2,23 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 01
-status: executing
-stopped_at: "Checkpoint Task 4 (01-03): awaiting human verify — end-to-end SSO + workspace + invite + member flow"
-last_updated: "2026-04-17T18:28:05.653Z"
+current_phase: 02
+status: phase-complete
+stopped_at: "Plan 02-04 complete — Phase 02 all 4 plans done. Ready for Phase 03."
+last_updated: "2026-04-20T12:00:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 100
+  completed_phases: 2
+  total_plans: 9
+  completed_plans: 8
+  percent: 89
 ---
 
 # Project State
 
 **Project:** Nodefy
-**Current Phase:** 01
-**Status:** Executing Phase 01
+**Current Phase:** 02
+**Status:** Phase 02 Complete — All 4 plans done
 
 ---
 
@@ -26,24 +26,24 @@ progress:
 
 | Phase | Status | Plans Done | Plans Total |
 |-------|--------|-----------|-------------|
-| 1 - Foundation | In Progress | 3 | 3 |
-| 2 - Core Product | Not started | 0 | 3 |
+| 1 - Foundation | Complete | 3 | 3 |
+| 2 - Core Product | Complete | 4 | 4 |
 | 3 - Collaboration & Discovery | Not started | 0 | 2 |
 | 4 - Quality & Hardening | Not started | 0 | 1 |
 
-**Overall:** 3/9 plans complete
+**Overall:** 8/9 plans complete
 
 ---
 
 ## Current Position
 
-Phase: 01 (foundation) — EXECUTING
-Plan: 3 of 3
-**Phase:** 1 — Foundation
-**Plan:** 01-03 tasks 1-3 complete — checkpoint at Task 4 (human verify — end-to-end SSO + workspace + invite + member flow)
-**Focus:** DB Schema & Docker → Backend Auth & Tenant API → Frontend Auth & Workspace UI
+Phase: 02 (core-product) — COMPLETE
+Plan: 4 of 4
+**Phase:** 2 — Core Product
+**Plan:** 02-04 COMPLETE — gap closure (workspace home), human verification approved
+**Focus:** Pipeline & Stage API → Card API → Board UI → Workspace Home Gap Closure
 
-Progress: `[██████████] 100%` (Phase 1 all plans complete, pending human verify checkpoint)
+Progress: `[██████████] 100%` (Phase 2 complete — all 4 plans done and human-verified)
 
 ---
 
@@ -53,7 +53,7 @@ See: `.planning/PROJECT.md`
 
 **Core value:** Qualquer membro de um workspace consegue ver e mover cards entre estágios do pipeline em tempo real, sem atrito.
 
-**Current focus:** Phase 01 — foundation
+**Current focus:** Phase 02 — core-product
 
 ---
 
@@ -67,6 +67,9 @@ See: `.planning/PROJECT.md`
 | Session count | 1 |
 
 ---
+| Phase 02 P01 | 705 | 3 tasks | 19 files |
+| Phase 02 P02 | 258 | 2 tasks | 4 files |
+| Phase 02 P04 | 120 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -82,9 +85,18 @@ See: `.planning/PROJECT.md`
 - .NET 10 SDK creates .slnx format (not .sln) — Dockerfile references .csproj directly and is unaffected
 - TenantMiddleware resolves tenant from 4 sources: JWT claim > workspaceId route > X-Tenant-Id header > id route
 - IgnoreQueryFilters() allowed only in InviteEndpoints.cs (cross-tenant token lookup) and WorkspaceEndpoints.cs (user multi-workspace query)
+- IgnoreQueryFilters used for tenant bootstrap on PATCH/DELETE /pipelines/{id} and /stages/{id} — immediately guarded by IsAdmin check; no data returned without authorization
+- AppDbContextFactory with NullTenantService added for EF Core design-time migration tooling — not used at runtime
+- init.sql updated to full Phase 2 schema (pipelines, stages, cards, activity_logs) — test containers use init.sql directly, not EF migrations
 - shadcn base-nova style replaced with Radix UI default style — base-nova uses @base-ui/react incompatible with locked Tailwind v3 + HSL stack
 - Login page wrapped in Suspense boundary — Next.js 16 App Router requires Suspense for useSearchParams() in statically analyzed pages
 - tsconfig @/auth and @/auth.config aliases added for root-level auth files — create-next-app @/* only covers src/*
+- Member-level auth for all card endpoints (not admin-only) — any workspace member can create/edit/move/archive cards
+- Card mutation pattern: IgnoreQueryFilters to bootstrap tenant → SetTenant → member check → mutate → LogActivity → SaveChangesAsync (atomic audit trail)
+- Partial PATCH on cards emits one activity log entry per changed field for fine-grained audit trail
+- Cross-pipeline guard on PATCH /cards/{id}/move: targetStageId must belong to same pipelineId — returns 400 if mismatch
+- Direct fetch in FirstPipelineForm (not usePipelines hook) — empty-state is one-shot; no TanStack Query cache needed; avoids QueryClient dependency on a nearly-static path
+- Workspace page discovers role via second apiFetch<Workspace[]>("/workspaces") — consistent with pipeline page pattern; layout cannot expose data to RSC page children
 
 ### Architecture Notes
 
@@ -101,6 +113,12 @@ See: `.planning/PROJECT.md`
 - Monetary value formatting: BRL (pt-BR) locale confirmed or configurable?
 - Fractional index rebalance threshold: define before Phase 2 card move implementation
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260420-g6x | Fix GitHub OAuth AccessDenied: add INTERNAL_API_URL for server-side fetch in signIn callback | 2026-04-20 | 17760be | [260420-g6x-fix-github-oauth-accessdenied-add-intern](.planning/quick/260420-g6x-fix-github-oauth-accessdenied-add-intern/) |
+
 ### Blockers
 
 None
@@ -115,9 +133,9 @@ None
 
 ## Session Continuity
 
-**Last session:** 2026-04-17T18:27:54.244Z
-**Stopped at:** Checkpoint Task 4 (01-03): awaiting human verify — end-to-end SSO + workspace + invite + member flow
-**Next action:** Start Docker Desktop, run `docker compose up -d --build`, verify all three services healthy, then complete the 11 end-to-end verification steps in 01-03-PLAN.md Task 4 using two browser windows with two SSO accounts. Type "approved" to complete both pending checkpoints (01-02 Task 4 and 01-03 Task 4).
+**Last session:** 2026-04-20T12:00:00.000Z
+**Stopped at:** Plan 02-04 complete — Phase 02 all 4 plans done
+**Next action:** Phase 2 is complete. Begin Phase 3 — Collaboration & Discovery (SignalR BoardHub real-time sync + search & filters).
 
 ---
-*Last updated: 2026-04-17 after plan 01-01 completion*
+*Last updated: 2026-04-20 — quick task 260420-g6x: Fix GitHub OAuth AccessDenied (INTERNAL_API_URL)*

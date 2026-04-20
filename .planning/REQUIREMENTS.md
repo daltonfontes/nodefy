@@ -24,20 +24,20 @@
 
 ### Pipeline & Estágios
 
-- [ ] **PIPE-01**: Admin pode criar pipelines dentro do workspace
-- [ ] **PIPE-02**: Admin pode renomear e excluir pipelines
-- [ ] **PIPE-03**: Admin pode adicionar, renomear e excluir estágios de um pipeline
-- [ ] **PIPE-04**: Admin pode reordenar estágios de um pipeline
-- [ ] **PIPE-05**: Cabeçalho de cada coluna exibe contagem de cards e soma do valor monetário (diferenciador)
+- [x] **PIPE-01**: Admin pode criar pipelines dentro do workspace
+- [x] **PIPE-02**: Admin pode renomear e excluir pipelines
+- [x] **PIPE-03**: Admin pode adicionar, renomear e excluir estágios de um pipeline
+- [x] **PIPE-04**: Admin pode reordenar estágios de um pipeline
+- [x] **PIPE-05**: Cabeçalho de cada coluna exibe contagem de cards e soma do valor monetário (diferenciador)
 
 ### Cards
 
-- [ ] **CARD-01**: Usuário pode criar card com título, descrição, valor monetário, responsável e data de fechamento
-- [ ] **CARD-02**: Usuário pode editar campos do card
-- [ ] **CARD-03**: Usuário pode arquivar (excluir soft) card
-- [ ] **CARD-04**: Usuário pode mover card entre estágios via drag-and-drop com update otimista
-- [ ] **CARD-05**: Card exibe indicador de tempo no estágio atual (ex: "23 dias neste estágio")
-- [ ] **CARD-06**: Card exibe log de atividade (criação, movimentações, edições) em ordem cronológica
+- [x] **CARD-01**: Usuário pode criar card com título, descrição, valor monetário, responsável e data de fechamento
+- [x] **CARD-02**: Usuário pode editar campos do card
+- [x] **CARD-03**: Usuário pode arquivar (excluir soft) card
+- [x] **CARD-04**: Usuário pode mover card entre estágios via drag-and-drop com update otimista
+- [x] **CARD-05**: Card exibe indicador de tempo no estágio atual (ex: "23 dias neste estágio")
+- [x] **CARD-06**: Card exibe log de atividade (criação, movimentações, edições) em ordem cronológica
 
 ### Colaboração em Tempo Real
 

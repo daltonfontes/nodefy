@@ -9,7 +9,7 @@
 | # | Phase | Goal | Requirements | Plans |
 |---|-------|------|--------------|-------|
 | 1 | Foundation | 1/3 | In Progress|  |
-| 2 | Core Product | Any workspace member can manage pipelines and move cards on a Kanban board with optimistic drag-and-drop | PIPE-01–05, CARD-01–06 | TBD |
+| 2 | Core Product | 4/4 | Complete   | 2026-04-20 |
 | 3 | Collaboration & Discovery | Card moves and edits broadcast in real time to all members; users can find any card via search and filters | REAL-01–02, DISC-01–02 | TBD |
 | 4 | Quality & Hardening | All critical user flows are covered by Playwright E2E tests and the product is shippable | TEST-02 | TBD |
 
@@ -18,7 +18,7 @@
 ## Phases
 
 - [ ] **Phase 1: Foundation** - Multi-tenant auth, workspace management, and DB schema with RLS + fractional indexing bootstrapped
-- [ ] **Phase 2: Core Product** - Full Kanban board: pipeline CRUD, card CRUD, drag-and-drop with optimistic updates and stage-age indicator
+- [x] **Phase 2: Core Product** - Full Kanban board: pipeline CRUD, card CRUD, drag-and-drop with optimistic updates and stage-age indicator (completed 2026-04-20)
 - [ ] **Phase 3: Collaboration & Discovery** - Real-time SignalR board sync + card search and filters
 - [ ] **Phase 4: Quality & Hardening** - Playwright E2E coverage of all critical flows; product ready to ship
 
@@ -61,10 +61,13 @@ Plans:
 4. Member can drag a card to a different stage; the UI updates immediately (optimistic) and rolls back visually on network failure
 5. Each card displays how long it has been in its current stage, and a chronological activity log of all moves and edits
 
-**Plans:**
-- [ ] Pipeline & Stage API: CRUD endpoints for pipelines and stages, stage reorder with fractional indexing, column aggregate queries (count + SUM)
-- [ ] Card API: CRUD endpoints for cards, soft-delete (archive), card move endpoint updating `position` + `stage_entered_at`, activity log append-only writes
-- [ ] Board UI: Kanban board with dnd-kit, optimistic DnD with TanStack Query rollback, card detail side panel, stage-age indicator, activity log display, column totals header
+**Plans:** 4/4 plans complete
+
+Plans:
+- [x] 02-01-PLAN.md — Pipeline & Stage API: EF Core migration (pipelines/stages/activity_logs tables + cards extension), FractionalIndex utility, pipeline CRUD, stage CRUD with fractional-index reordering, board load endpoint with aggregates
+- [x] 02-02-PLAN.md — Card API: Card CRUD (create, edit, archive), card move endpoint (stage_id + stage_entered_at + position atomic update), activity log writes on every mutation, GET /cards/{id}/activity endpoint
+- [x] 02-03-PLAN.md — Board UI: Kanban board with dnd-kit (closestCorners, DragOverlay, PointerSensor distance:4), optimistic DnD with TanStack Query onMutate/onError rollback, collapsible sidebar (Zustand+localStorage), card detail Sheet panel, stage-age badge, column aggregates, activity log display
+- [x] 02-04-PLAN.md — Gap closure (UAT test 2): Workspace home page creates first pipeline — RSC redirect to existing pipeline or empty-state form that POSTs via /api/workspaces/[id]/pipelines and navigates to the new board
 
 **UI hint**: yes
 
@@ -108,8 +111,8 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Not started | - |
-| 2. Core Product | 0/3 | Not started | - |
+| 1. Foundation | 3/3 | Complete | 2026-04-20 |
+| 2. Core Product | 4/4 | Complete | 2026-04-20 |
 | 3. Collaboration & Discovery | 0/2 | Not started | - |
 | 4. Quality & Hardening | 0/1 | Not started | - |
 
@@ -152,3 +155,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-04-16*
+*Phase 2 plans created: 2026-04-17*

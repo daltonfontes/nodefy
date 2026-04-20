@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-17T19:25:52.911Z",
+  "phase": "01",
+  "phase_name": "foundation",
+  "phase_dir": ".planning/phases/01-foundation",
+  "plan": 3,
+  "task": 4,
+  "total_tasks": 4,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": 1, "name": "db/init.sql + Docker Compose stack (01-01 Tasks 1-2)", "status": "done", "commit": "3541e42"},
+    {"id": 2, "name": "Human verify DB + RLS (01-01 Task 3)", "status": "done", "commit": "4c14d7a"},
+    {"id": 3, "name": ".NET 9 backend: EF Core, endpoints, tests (01-02 Tasks 1-3)", "status": "done", "commit": "82cef7e"},
+    {"id": 4, "name": "Next.js frontend: Auth.js SSO, workspace flows, member UI (01-03 Tasks 1-3)", "status": "done", "commit": "3f633a9"},
+    {"id": 5, "name": "FK+RLS fix for workspace creation (WorkspaceEndpoints.cs)", "status": "done", "commit": "0eae6f4"}
+  ],
+  "remaining_tasks": [
+    {"id": 6, "name": "Re-run dotnet test after FK/RLS fix — expected 26/26 pass", "status": "not_started"},
+    {"id": 7, "name": "If tests pass: approve phase verification (update VERIFICATION.md to passed)", "status": "not_started"},
+    {"id": 8, "name": "Mark Phase 01 complete in ROADMAP/STATE", "status": "not_started"},
+    {"id": 9, "name": "Address CR-01 (live credentials in .env.example) — critical security finding", "status": "not_started"},
+    {"id": 10, "name": "Install gh CLI and create PR from master-pr branch", "status": "not_started"}
+  ],
+  "blockers": [
+    {"description": "dotnet tests were 17/26 failing due to FK+RLS bug — fix committed (0eae6f4), needs re-run to confirm", "type": "technical", "workaround": "fix committed, just re-run"},
+    {"description": "gh CLI not installed — needed for /gsd-ship to create PR", "type": "human_action", "workaround": "winget install --id GitHub.cli"},
+    {"description": "Live GitHub OAuth credentials in .env.example (CR-01) — CRITICAL, rotate immediately", "type": "human_action", "workaround": "rotate at github.com/settings/developers, scrub git history"}
+  ],
+  "human_actions_pending": [
+    {"action": "Run: cd api && dotnet test Nodefy.slnx --logger console;verbosity=normal", "context": "Confirm 26/26 pass after FK fix", "blocking": true},
+    {"action": "Rotate GitHub OAuth credentials — CR-01 is CRITICAL", "context": "AUTH_GITHUB_ID=Ov23liCUVOsxSCyhyHlY committed in .env.example", "blocking": true},
+    {"action": "Install gh CLI: winget install --id GitHub.cli && gh auth login", "context": "Required for /gsd-ship", "blocking": false}
+  ],
+  "decisions": [
+    {"decision": "Workspace creation uses explicit transaction + SET LOCAL app.current_tenant", "rationale": "Single SaveChangesAsync caused FK violation (wrong insert order) and RLS block (no tenant context). Two saves with SET LOCAL fixes both atomically.", "phase": "01"},
+    {"decision": "PR branch 'master-pr' created from a5ffc6f with 5 code commits only", "rationale": "All work on master; master-pr filters out planning-only commits for clean PR diff", "phase": "01"}
+  ],
+  "uncommitted_files": [
+    ".env.example (modified — still has real credentials, CR-01)",
+    ".planning/STATE.md (modified)",
+    ".planning/config.json (modified)",
+    ".planning/phases/01-foundation/01-VERIFICATION.md (untracked — created by verifier, status=human_needed)"
+  ],
+  "next_action": "Run dotnet tests to confirm 26/26 pass, then update VERIFICATION.md to passed and mark Phase 01 complete",
+  "context_notes": "Phase 01 all 3 plans built and human-verified E2E. Code review found 4 critical issues. The FK bug in workspace creation was the only test failure root cause (all 17 failures trace to POST /workspaces → SaveChangesAsync order). Fix is committed. VERIFICATION.md exists but status=human_needed pending test confirmation."
+}

@@ -23,7 +23,7 @@ public static class SsoSyncEndpoints
             {
                 existing = new User
                 {
-                    Id = Guid.NewGuid(),
+                    Id = user.UserId ?? Guid.NewGuid(),
                     Email = req.Email,
                     Name = req.Name,
                     AvatarUrl = req.AvatarUrl,

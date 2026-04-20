@@ -1,7 +1,10 @@
 import { auth } from "@/auth"
 import { mintApiToken } from "./api-token"
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000"
+const baseUrl =
+  process.env.INTERNAL_API_URL ??
+  process.env.NEXT_PUBLIC_API_URL ??
+  "http://localhost:5000"
 
 export async function apiFetch<T>(path: string, init?: RequestInit & { tenantId?: string }): Promise<T> {
   const session = await auth()

@@ -61,27 +61,76 @@ CREATE TABLE invitations (
 CREATE INDEX idx_invitations_tenant ON invitations(tenant_id);
 CREATE INDEX idx_invitations_token ON invitations(token);
 
--- Cards STUB table — Phase 2 implements full schema, but the columns below
--- MUST exist in the first migration (Pitfall 7 / STATE.md key decisions).
--- They are not retrofittable without a data migration on every existing row.
+-- Pipelines table (tenant-scoped)
+CREATE TABLE pipelines (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    position DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_pipelines_tenant ON pipelines(tenant_id);
+
+-- Stages table (tenant-scoped, belongs to a pipeline)
+CREATE TABLE stages (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+    pipeline_id UUID NOT NULL REFERENCES pipelines(id) ON DELETE CASCADE,
+    name VARCHAR(100) NOT NULL,
+    position DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_stages_tenant ON stages(tenant_id);
+CREATE INDEX idx_stages_pipeline ON stages(pipeline_id);
+
+-- Cards table (full Phase 2 schema)
 CREATE TABLE cards (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tenant_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+    pipeline_id UUID NOT NULL REFERENCES pipelines(id) ON DELETE CASCADE,
+    stage_id UUID NOT NULL REFERENCES stages(id) ON DELETE RESTRICT,
+    title VARCHAR(200) NOT NULL DEFAULT '',
+    description TEXT,
+    monetary_value NUMERIC(15,2),
+    assignee_id UUID REFERENCES users(id) ON DELETE SET NULL,
     position DOUBLE PRECISION NOT NULL DEFAULT 0.5,
     stage_entered_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    close_date TIMESTAMPTZ,
+    archived_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    -- Phase 2 adds: title, description, monetary_value, assignee_id, close_date,
-    --               pipeline_id, stage_id, archived_at, etc.
 );
 CREATE INDEX idx_cards_tenant ON cards(tenant_id);
+CREATE INDEX idx_cards_stage ON cards(stage_id);
+CREATE INDEX idx_cards_pipeline ON cards(pipeline_id);
+
+-- Activity logs table (tenant-scoped, linked to a card)
+CREATE TABLE activity_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+    card_id UUID NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+    actor_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    action VARCHAR(100) NOT NULL,
+    payload JSONB NOT NULL DEFAULT '{}',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_activity_logs_card ON activity_logs(card_id);
 
 -- ============================================================================
 -- Row-Level Security (second isolation layer below EF Core global filter)
 -- ============================================================================
 
 ALTER TABLE workspace_members ENABLE ROW LEVEL SECURITY;
+ALTER TABLE workspace_members FORCE ROW LEVEL SECURITY;
 ALTER TABLE invitations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE invitations FORCE ROW LEVEL SECURITY;
+ALTER TABLE pipelines ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pipelines FORCE ROW LEVEL SECURITY;
+ALTER TABLE stages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stages FORCE ROW LEVEL SECURITY;
 ALTER TABLE cards ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cards FORCE ROW LEVEL SECURITY;
+ALTER TABLE activity_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE activity_logs FORCE ROW LEVEL SECURITY;
 
 -- Policies reference the session variable that TenantDbConnectionInterceptor
 -- (Phase 1.2) sets at every connection open: SET app.current_tenant = '<uuid>'.
@@ -91,7 +140,16 @@ CREATE POLICY tenant_isolation_policy ON workspace_members
 CREATE POLICY tenant_isolation_policy ON invitations
     USING (tenant_id = current_setting('app.current_tenant', true)::UUID);
 
+CREATE POLICY tenant_isolation_policy ON pipelines
+    USING (tenant_id = current_setting('app.current_tenant', true)::UUID);
+
+CREATE POLICY tenant_isolation_policy ON stages
+    USING (tenant_id = current_setting('app.current_tenant', true)::UUID);
+
 CREATE POLICY tenant_isolation_policy ON cards
+    USING (tenant_id = current_setting('app.current_tenant', true)::UUID);
+
+CREATE POLICY tenant_isolation_policy ON activity_logs
     USING (tenant_id = current_setting('app.current_tenant', true)::UUID);
 
 -- Note: workspaces table is NOT RLS-protected. Users discover their workspaces
@@ -99,9 +157,15 @@ CREATE POLICY tenant_isolation_policy ON cards
 -- users table is NOT RLS-protected — global lookup table.
 
 -- ============================================================================
--- Role privilege guard (for human review):
--- POSTGRES_USER creates a standard login role by default — keep it that way.
--- WARNING: Do NOT grant nodefy_app any elevated database privileges.
--- Granting elevated privileges would silently disable all RLS tenant isolation.
--- See db/README.md for details.
+-- Application role (non-superuser) — RLS is enforced at this privilege level.
+-- nodefy_app (POSTGRES_USER) is a superuser and bypasses RLS.
+-- nodefy_api is used in integration tests to verify Postgres-level isolation.
 -- ============================================================================
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'nodefy_api') THEN
+        CREATE ROLE nodefy_api NOLOGIN;
+    END IF;
+END $$;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO nodefy_api;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO nodefy_api;
