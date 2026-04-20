@@ -12,7 +12,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return false
       }
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000"
+        const apiUrl =
+          process.env.INTERNAL_API_URL ??
+          process.env.NEXT_PUBLIC_API_URL ??
+          "http://localhost:5000"
         // We need a JWT to call /sso/sync — mint a short-lived token signed with AUTH_SECRET
         const { mintApiToken } = await import("@/lib/api-token")
         const token = await mintApiToken({ sub: user.id ?? account?.providerAccountId ?? "", email: user.email })
