@@ -42,12 +42,17 @@ function formatRelativeTime(dateStr: string) {
 }
 
 function activityLabel(log: ActivityLog) {
+  let parsed: Record<string, unknown> = {}
+  try { parsed = JSON.parse(log.payload) } catch { /* ignore */ }
+
   switch (log.action) {
-    case "created": return `Card criado`
-    case "moved": return `Card movido: ${log.payload}`
-    case "edited": return `Campo editado: ${log.payload}`
-    case "archived": return `Card arquivado`
-    default: return log.payload
+    case "created": return "Card criado"
+    case "moved":
+      return `Card movido: ${parsed.from_stage ?? "?"} → ${parsed.to_stage ?? "?"}`
+    case "edited":
+      return `Campo editado: ${parsed.field ?? "?"}`
+    case "archived": return "Card arquivado"
+    default: return log.action
   }
 }
 
