@@ -1,5 +1,6 @@
 "use client"
 import { useState, useCallback } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import {
   DndContext,
   DragOverlay,
@@ -38,6 +39,7 @@ export function BoardShell({ initialBoard, workspaceId, pipelineId, workspace }:
   const { board, moveMutation } = useBoard(pipelineId, workspaceId, initialBoard)
   const { createMutation: createStage } = useStages(pipelineId)
   const { setDraggingCardId } = useUIStore()
+  const qc = useQueryClient()
 
   const [activeCard, setActiveCard] = useState<CardSummary | null>(null)
   const [overColumnId, setOverColumnId] = useState<string | null>(null)
@@ -135,6 +137,7 @@ export function BoardShell({ initialBoard, workspaceId, pipelineId, workspace }:
     })
     setNewCardTitle("")
     setNewCardStageId(null)
+    qc.invalidateQueries({ queryKey: ["board", pipelineId] })
   }
 
   return (
