@@ -35,7 +35,8 @@ public static class PipelineEndpoints
             async (Guid workspaceId, CreatePipelineRequest req, AppDbContext db, CurrentUserAccessor user, ITenantService tenant) =>
         {
             tenant.SetTenant(workspaceId);
-            if (string.IsNullOrWhiteSpace(req.Name) || req.Name.Length < 2)
+            var trimmedName = req.Name?.Trim() ?? "";
+            if (trimmedName.Length < 2)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["name"] = ["Nome é obrigatório (mínimo 2 caracteres)"] });
             if (!await WorkspaceEndpoints.IsAdmin(db, workspaceId, user.UserId)) return Results.Forbid();
 
@@ -48,7 +49,7 @@ public static class PipelineEndpoints
             {
                 Id = Guid.NewGuid(),
                 TenantId = workspaceId,
-                Name = req.Name,
+                Name = trimmedName,
                 Position = FractionalIndex.After(lastPosition),
                 CreatedAt = DateTimeOffset.UtcNow,
             };
@@ -101,11 +102,12 @@ public static class PipelineEndpoints
 
             tenant.SetTenant(pipeline.TenantId);
 
-            if (string.IsNullOrWhiteSpace(req.Name) || req.Name.Length < 2)
+            var trimmedName = req.Name?.Trim() ?? "";
+            if (trimmedName.Length < 2)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["name"] = ["Nome é obrigatório (mínimo 2 caracteres)"] });
             if (!await WorkspaceEndpoints.IsAdmin(db, pipeline.TenantId, user.UserId)) return Results.Forbid();
 
-            pipeline.Name = req.Name;
+            pipeline.Name = trimmedName;
             await db.SaveChangesAsync();
             return Results.Ok(new PipelineDto(pipeline.Id, pipeline.Name, pipeline.Position));
         }).RequireAuthorization();

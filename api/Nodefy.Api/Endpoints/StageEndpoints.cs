@@ -27,7 +27,8 @@ public static class StageEndpoints
 
             tenant.SetTenant(pipeline.TenantId);
 
-            if (string.IsNullOrWhiteSpace(req.Name) || req.Name.Length < 2)
+            var trimmedName = req.Name?.Trim() ?? "";
+            if (trimmedName.Length < 2)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["name"] = ["Nome é obrigatório (mínimo 2 caracteres)"] });
             if (!await WorkspaceEndpoints.IsAdmin(db, pipeline.TenantId, user.UserId)) return Results.Forbid();
 
@@ -42,7 +43,7 @@ public static class StageEndpoints
                 Id = Guid.NewGuid(),
                 TenantId = pipeline.TenantId,
                 PipelineId = pipelineId,
-                Name = req.Name,
+                Name = trimmedName,
                 Position = FractionalIndex.After(lastPosition),
                 CreatedAt = DateTimeOffset.UtcNow,
             };
@@ -60,11 +61,12 @@ public static class StageEndpoints
 
             tenant.SetTenant(stage.TenantId);
 
-            if (string.IsNullOrWhiteSpace(req.Name) || req.Name.Length < 2)
+            var trimmedName = req.Name?.Trim() ?? "";
+            if (trimmedName.Length < 2)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["name"] = ["Nome é obrigatório (mínimo 2 caracteres)"] });
             if (!await WorkspaceEndpoints.IsAdmin(db, stage.TenantId, user.UserId)) return Results.Forbid();
 
-            stage.Name = req.Name;
+            stage.Name = trimmedName;
             await db.SaveChangesAsync();
             return Results.Ok(new StageDto(stage.Id, stage.Name, stage.Position, stage.PipelineId));
         }).RequireAuthorization();

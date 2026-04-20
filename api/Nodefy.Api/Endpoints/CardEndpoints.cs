@@ -43,7 +43,8 @@ public static class CardEndpoints
             if (!isMember) return Results.Forbid();
 
             // Validate inputs
-            if (string.IsNullOrWhiteSpace(req.Title) || req.Title.Length < 2)
+            var trimmedTitle = req.Title?.Trim() ?? "";
+            if (trimmedTitle.Length < 2)
                 return Results.ValidationProblem(new Dictionary<string, string[]> { ["title"] = ["Título é obrigatório (mínimo 2 caracteres)"] });
             if (req.MonetaryValue.HasValue && req.MonetaryValue < 0)
                 return Results.BadRequest(new { error = "monetaryValue must be >= 0" });
@@ -65,7 +66,7 @@ public static class CardEndpoints
                 TenantId = pipeline.TenantId,
                 PipelineId = pipelineId,
                 StageId = req.StageId,
-                Title = req.Title,
+                Title = trimmedTitle,
                 Description = req.Description,
                 MonetaryValue = req.MonetaryValue,
                 AssigneeId = req.AssigneeId,
