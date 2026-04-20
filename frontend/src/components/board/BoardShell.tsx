@@ -303,7 +303,7 @@ export function BoardShell({ initialBoard, workspaceId, pipelineId, workspace }:
         </div>
       </main>
 
-      <CardDetailPanel workspaceId={workspaceId} pipelineId={pipelineId} />
+      <CardDetailPanel workspaceId={workspaceId} pipelineId={pipelineId} workspaceCurrency={workspace.currency} />
     </div>
   )
 }

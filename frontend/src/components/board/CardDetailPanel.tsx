@@ -21,6 +21,7 @@ import type { Card, ActivityLog } from "@/types/api"
 interface CardDetailPanelProps {
   workspaceId: string
   pipelineId: string
+  workspaceCurrency: "BRL" | "USD" | "EUR"
 }
 
 function formatRelativeTime(dateStr: string) {
@@ -56,7 +57,7 @@ function activityLabel(log: ActivityLog) {
   }
 }
 
-export function CardDetailPanel({ workspaceId, pipelineId }: CardDetailPanelProps) {
+export function CardDetailPanel({ workspaceId, pipelineId, workspaceCurrency }: CardDetailPanelProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const qc = useQueryClient()
@@ -204,7 +205,7 @@ export function CardDetailPanel({ workspaceId, pipelineId }: CardDetailPanelProp
                 </label>
                 <p className="text-sm">
                   {card.monetaryValue != null
-                    ? new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(card.monetaryValue)
+                    ? new Intl.NumberFormat("pt-BR", { style: "currency", currency: workspaceCurrency }).format(card.monetaryValue)
                     : "—"}
                 </p>
               </div>
