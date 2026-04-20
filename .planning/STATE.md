@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 02
 status: executing
-stopped_at: "Checkpoint: 02-03-PLAN.md Task 3 (human-verify)"
-last_updated: "2026-04-18T15:34:00.032Z"
+stopped_at: "Checkpoint: 02-04-PLAN.md Task 3 (human-verify)"
+last_updated: "2026-04-20T10:17:15.365Z"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 7
+  completed_plans: 7
   percent: 100
 ---
 
@@ -38,7 +38,7 @@ progress:
 ## Current Position
 
 Phase: 02 (core-product) — EXECUTING
-Plan: 1 of 3
+Plan: 1 of 4
 **Phase:** 1 — Foundation
 **Plan:** 01-03 COMPLETE — all 4 tasks done, human E2E verification approved
 **Focus:** DB Schema & Docker → Backend Auth & Tenant API → Frontend Auth & Workspace UI
@@ -69,6 +69,7 @@ See: `.planning/PROJECT.md`
 ---
 | Phase 02 P01 | 705 | 3 tasks | 19 files |
 | Phase 02 P02 | 258 | 2 tasks | 4 files |
+| Phase 02 P04 | 120 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ See: `.planning/PROJECT.md`
 - Card mutation pattern: IgnoreQueryFilters to bootstrap tenant → SetTenant → member check → mutate → LogActivity → SaveChangesAsync (atomic audit trail)
 - Partial PATCH on cards emits one activity log entry per changed field for fine-grained audit trail
 - Cross-pipeline guard on PATCH /cards/{id}/move: targetStageId must belong to same pipelineId — returns 400 if mismatch
+- Direct fetch in FirstPipelineForm (not usePipelines hook) — empty-state is one-shot; no TanStack Query cache needed; avoids QueryClient dependency on a nearly-static path
+- Workspace page discovers role via second apiFetch<Workspace[]>("/workspaces") — consistent with pipeline page pattern; layout cannot expose data to RSC page children
 
 ### Architecture Notes
 
@@ -124,8 +127,8 @@ None
 
 ## Session Continuity
 
-**Last session:** 2026-04-18T15:34:00.019Z
-**Stopped at:** Checkpoint: 02-03-PLAN.md Task 3 (human-verify)
+**Last session:** 2026-04-20T10:17:15.352Z
+**Stopped at:** Checkpoint: 02-04-PLAN.md Task 3 (human-verify)
 **Next action:** Phase 1 is complete. Begin Phase 2 — Core Product (pipeline CRUD, card CRUD, drag-and-drop Kanban board).
 
 ---
