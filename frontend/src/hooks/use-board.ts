@@ -28,7 +28,7 @@ export function useBoard(pipelineId: string, workspaceId: string, initialData: B
       prevPosition: number | null
       nextPosition: number | null
     }) => {
-      const res = await fetch(`/api/cards/${cardId}/move`, {
+      const res = await fetch(`/api/cards/${cardId}/move?workspaceId=${workspaceId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ targetStageId, prevPosition, nextPosition }),
