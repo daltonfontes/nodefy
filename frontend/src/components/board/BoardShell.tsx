@@ -99,13 +99,33 @@ export function BoardShell({ initialBoard, workspaceId, pipelineId, workspace }:
       const targetStageId = (overData?.stageId ?? over.id) as string
 
       if (!sourceStageId || !targetStageId) return
-      if (sourceStageId === targetStageId) return
 
       // Find positions for fractional indexing
       const targetStage = board.stages.find((s) => s.id === targetStageId)
       const targetCards = targetStage?.cards ?? []
-      const prevPosition = targetCards.length > 0 ? targetCards[targetCards.length - 1].position : null
-      const nextPosition: number | null = null
+
+      let prevPosition: number | null = null
+      let nextPosition: number | null = null
+
+      if (sourceStageId === targetStageId) {
+        // Same-stage reorder: compute neighbors around the card being dropped over
+        const overCardId = overData?.type === "card" ? (over.id as string) : null
+        if (overCardId) {
+          const overIdx = targetCards.findIndex((c) => c.id === overCardId)
+          if (overIdx !== -1) {
+            prevPosition = targetCards[overIdx - 1]?.position ?? null
+            nextPosition = targetCards[overIdx]?.position ?? null
+          }
+        } else {
+          // Dropped on column itself — place at end
+          prevPosition = targetCards.length > 0 ? targetCards[targetCards.length - 1].position : null
+          nextPosition = null
+        }
+      } else {
+        // Cross-stage move — place at end of target column
+        prevPosition = targetCards.length > 0 ? targetCards[targetCards.length - 1].position : null
+        nextPosition = null
+      }
 
       moveMutation.mutate(
         { cardId, targetStageId, prevPosition, nextPosition },
