@@ -61,7 +61,7 @@ public static class PipelineEndpoints
         app.MapGet("/pipelines/{id:guid}/board",
             async (Guid id, AppDbContext db, ITenantService tenant) =>
         {
-            var pipeline = await db.Pipelines.FirstOrDefaultAsync(p => p.Id == id);
+            var pipeline = await db.Pipelines.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
             if (pipeline is null) return Results.NotFound();
 
             tenant.SetTenant(pipeline.TenantId);
