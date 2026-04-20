@@ -113,6 +113,12 @@ See: `.planning/PROJECT.md`
 - Monetary value formatting: BRL (pt-BR) locale confirmed or configurable?
 - Fractional index rebalance threshold: define before Phase 2 card move implementation
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260420-g6x | Fix GitHub OAuth AccessDenied: add INTERNAL_API_URL for server-side fetch in signIn callback | 2026-04-20 | 17760be | [260420-g6x-fix-github-oauth-accessdenied-add-intern](.planning/quick/260420-g6x-fix-github-oauth-accessdenied-add-intern/) |
+
 ### Blockers
 
 None
@@ -132,4 +138,4 @@ None
 **Next action:** Phase 2 is complete. Begin Phase 3 — Collaboration & Discovery (SignalR BoardHub real-time sync + search & filters).
 
 ---
-*Last updated: 2026-04-20 after plan 02-04 completion (human verification approved)*
+*Last updated: 2026-04-20 — quick task 260420-g6x: Fix GitHub OAuth AccessDenied (INTERNAL_API_URL)*
