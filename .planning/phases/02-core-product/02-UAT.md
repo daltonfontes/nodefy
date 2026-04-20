@@ -7,8 +7,15 @@ updated: 2026-04-20T12:00:00Z
 ---
 
 ## Current Test
+<!-- OVERWRITE each test - shows where we are -->
 
-[testing complete]
+number: 3
+name: Criar Stage (Coluna)
+expected: |
+  Dentro do pipeline criado, clicar para adicionar uma coluna.
+  Digitar um nome (ex: "Em Progresso") e confirmar.
+  A coluna aparece no board com header e contador zerado.
+awaiting: user response
 
 ## Tests
 

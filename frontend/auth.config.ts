@@ -4,6 +4,7 @@ import Google from "next-auth/providers/google"
 import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id"
 
 export const authConfig = {
+  trustHost: true,
   providers: [
     GitHub({
       authorization: { params: { scope: "read:user user:email" } },
@@ -44,6 +45,7 @@ export const authConfig = {
       return token
     },
     async session({ session, token }) {
+      if (token.sub) session.user.id = token.sub
       ;(session as any).provider = token.provider
       ;(session as any).providerAccountId = token.providerAccountId
       return session

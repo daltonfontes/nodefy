@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000"
+const baseUrl =
+  process.env.INTERNAL_API_URL ??
+  process.env.NEXT_PUBLIC_API_URL ??
+  "http://localhost:5000"
 
 async function getInviteInfo(token: string): Promise<{ workspaceName: string; role: string } | { error: number }> {
   const res = await fetch(`${baseUrl}/invites/${token}`, { cache: "no-store" })

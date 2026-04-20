@@ -43,6 +43,8 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000}
       INTERNAL_API_URL: http://api:5000
       AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_URL: ${FRONTEND_URL:-http://localhost:3000}
+      AUTH_TRUST_HOST: "1"
       AUTH_GITHUB_ID: ${AUTH_GITHUB_ID}
       AUTH_GITHUB_SECRET: ${AUTH_GITHUB_SECRET}
       AUTH_GOOGLE_ID: ${AUTH_GOOGLE_ID}

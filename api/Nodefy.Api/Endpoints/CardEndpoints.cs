@@ -38,8 +38,9 @@ public static class CardEndpoints
 
             tenant.SetTenant(pipeline.TenantId);
 
-            // Member-level check — cards are NOT admin-only
-            var isMember = await db.WorkspaceMembers.AnyAsync(m => m.UserId == user.UserId);
+            // Member-level check — IgnoreQueryFilters because _tenantId is captured at Guid.Empty when no tenant header
+            var isMember = await db.WorkspaceMembers.IgnoreQueryFilters()
+                .AnyAsync(m => m.TenantId == pipeline.TenantId && m.UserId == user.UserId);
             if (!isMember) return Results.Forbid();
 
             // Validate inputs
@@ -49,13 +50,14 @@ public static class CardEndpoints
             if (req.MonetaryValue.HasValue && req.MonetaryValue < 0)
                 return Results.BadRequest(new { error = "monetaryValue must be >= 0" });
 
-            // Verify the requested stage belongs to this pipeline
-            var stage = await db.Stages.FirstOrDefaultAsync(s => s.Id == req.StageId && s.PipelineId == pipelineId);
+            // Verify the requested stage belongs to this pipeline — IgnoreQueryFilters same reason
+            var stage = await db.Stages.IgnoreQueryFilters()
+                .FirstOrDefaultAsync(s => s.TenantId == pipeline.TenantId && s.Id == req.StageId && s.PipelineId == pipelineId);
             if (stage is null) return Results.BadRequest(new { error = "stageId does not belong to this pipeline" });
 
             // Compute position: after the last card in that stage
-            var lastPosition = await db.Cards
-                .Where(c => c.StageId == req.StageId)
+            var lastPosition = await db.Cards.IgnoreQueryFilters()
+                .Where(c => c.TenantId == pipeline.TenantId && c.StageId == req.StageId && c.ArchivedAt == null)
                 .OrderByDescending(c => c.Position)
                 .Select(c => (double?)c.Position)
                 .FirstOrDefaultAsync() ?? 0.0;
@@ -95,9 +97,9 @@ public static class CardEndpoints
 
             tenant.SetTenant(card.TenantId);
 
-            // Re-fetch with global filters applied (ensures tenant + archived filter)
-            var filteredCard = await db.Cards.FirstOrDefaultAsync(c => c.Id == id);
-            if (filteredCard is null) return Results.NotFound();
+            // Manual filter: _tenantId captured at Guid.Empty, must check explicitly
+            if (card.ArchivedAt != null) return Results.NotFound();
+            var filteredCard = card;
 
             return Results.Ok(ToDto(filteredCard));
         }).RequireAuthorization();
@@ -112,7 +114,8 @@ public static class CardEndpoints
 
             tenant.SetTenant(card.TenantId);
 
-            var isMember = await db.WorkspaceMembers.AnyAsync(m => m.UserId == user.UserId);
+            var isMember = await db.WorkspaceMembers.IgnoreQueryFilters()
+                .AnyAsync(m => m.TenantId == card.TenantId && m.UserId == user.UserId);
             if (!isMember) return Results.Forbid();
 
             // Validate monetary value if provided
@@ -170,7 +173,8 @@ public static class CardEndpoints
 
             tenant.SetTenant(card.TenantId);
 
-            var isMember = await db.WorkspaceMembers.AnyAsync(m => m.UserId == user.UserId);
+            var isMember = await db.WorkspaceMembers.IgnoreQueryFilters()
+                .AnyAsync(m => m.TenantId == card.TenantId && m.UserId == user.UserId);
             if (!isMember) return Results.Forbid();
 
             card.ArchivedAt = DateTimeOffset.UtcNow;
@@ -192,17 +196,20 @@ public static class CardEndpoints
 
             tenant.SetTenant(card.TenantId);
 
-            var isMember = await db.WorkspaceMembers.AnyAsync(m => m.UserId == user.UserId);
+            var isMember = await db.WorkspaceMembers.IgnoreQueryFilters()
+                .AnyAsync(m => m.TenantId == card.TenantId && m.UserId == user.UserId);
             if (!isMember) return Results.Forbid();
 
             // Validate targetStageId belongs to same pipeline (cross-pipeline guard)
-            var targetStage = await db.Stages.FirstOrDefaultAsync(s => s.Id == req.TargetStageId);
+            var targetStage = await db.Stages.IgnoreQueryFilters()
+                .FirstOrDefaultAsync(s => s.TenantId == card.TenantId && s.Id == req.TargetStageId);
             if (targetStage is null) return Results.NotFound();
             if (targetStage.PipelineId != card.PipelineId)
                 return Results.BadRequest(new { error = "targetStageId belongs to a different pipeline" });
 
             // Load from-stage name before updating StageId (for activity log)
-            var fromStage = await db.Stages.FirstOrDefaultAsync(s => s.Id == card.StageId);
+            var fromStage = await db.Stages.IgnoreQueryFilters()
+                .FirstOrDefaultAsync(s => s.TenantId == card.TenantId && s.Id == card.StageId);
 
             // Compute position via fractional indexing
             var newPosition = FractionalIndex.Between(req.PrevPosition, req.NextPosition);

@@ -150,7 +150,7 @@ export function BoardShell({ initialBoard, workspaceId, pipelineId, workspace }:
   async function handleCreateCard(stageId: string) {
     const title = newCardTitle.trim()
     if (!title) return
-    await fetch(`/api/pipelines/${pipelineId}/cards`, {
+    await fetch(`/api/pipelines/${pipelineId}/cards?workspaceId=${workspaceId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, stageId }),
