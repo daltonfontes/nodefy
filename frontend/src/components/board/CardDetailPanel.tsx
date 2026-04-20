@@ -70,7 +70,7 @@ export function CardDetailPanel({ workspaceId, pipelineId, workspaceCurrency }: 
   const { data: card } = useQuery<Card>({
     queryKey: ["card", openCardId],
     queryFn: async () => {
-      const res = await fetch(`/api/cards/${openCardId}`)
+      const res = await fetch(`/api/cards/${openCardId}?workspaceId=${workspaceId}`)
       if (!res.ok) throw new Error(await res.text())
       return res.json()
     },
@@ -89,7 +89,7 @@ export function CardDetailPanel({ workspaceId, pipelineId, workspaceCurrency }: 
 
   const patchMutation = useMutation({
     mutationFn: async (patch: Partial<Pick<Card, "title" | "description" | "monetaryValue" | "assigneeId" | "closeDate">>) => {
-      const res = await fetch(`/api/cards/${openCardId}`, {
+      const res = await fetch(`/api/cards/${openCardId}?workspaceId=${workspaceId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(patch),
@@ -105,7 +105,7 @@ export function CardDetailPanel({ workspaceId, pipelineId, workspaceCurrency }: 
 
   const archiveMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`/api/cards/${openCardId}/archive`, { method: "PATCH" })
+      const res = await fetch(`/api/cards/${openCardId}/archive?workspaceId=${workspaceId}`, { method: "PATCH" })
       if (!res.ok) throw new Error(await res.text())
       return res.json()
     },

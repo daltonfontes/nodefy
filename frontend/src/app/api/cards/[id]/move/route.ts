@@ -3,9 +3,10 @@ import { apiFetch } from "@/lib/api"
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  const workspaceId = new URL(req.url).searchParams.get("workspaceId") ?? undefined
   const body = await req.json()
   try {
-    const data = await apiFetch(`/cards/${id}/move`, { method: "PATCH", body: JSON.stringify(body) })
+    const data = await apiFetch(`/cards/${id}/move`, { method: "PATCH", body: JSON.stringify(body), tenantId: workspaceId })
     return NextResponse.json(data)
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 })
